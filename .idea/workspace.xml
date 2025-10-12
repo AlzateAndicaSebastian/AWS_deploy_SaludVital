@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/documentation/preparativos_despliegue.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,8 +56,17 @@
       <updated>1760223815970</updated>
       <workItem from="1760223817189" duration="529000" />
       <workItem from="1760224377550" duration="1337000" />
-      <workItem from="1760301870416" duration="5406000" />
+      <workItem from="1760301870416" duration="7319000" />
     </task>
+    <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
+      <option name="closed" value="true" />
+      <created>1760310442579</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760310442579</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -74,5 +82,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws" />
+    <option name="LAST_COMMIT_MESSAGE" value="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws" />
   </component>
 </project>
