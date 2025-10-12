@@ -40,6 +40,10 @@ jobs:
   docker:
     needs: test  # Este trabajo se ejecuta solo si el trabajo 'test' es exitoso
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # Si necesitas acceso a otros recursos, agrégalos aquí
     steps:
       # Paso 1: Obtener el código
       - name: Checkout código
@@ -61,6 +65,9 @@ jobs:
   deploy:
     needs: docker  # Este trabajo se ejecuta solo si el trabajo 'docker' es exitoso
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       # Paso 1: Obtener el código
       - name: Checkout código
@@ -76,6 +83,9 @@ jobs:
   deploy-aws:
     needs: docker  # Este trabajo se ejecuta solo si el trabajo 'docker' es exitoso
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       # Paso 1: Configurar las credenciales de AWS
       - name: Configure AWS credentials
