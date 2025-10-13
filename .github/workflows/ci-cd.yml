@@ -128,4 +128,17 @@ jobs:
 
       - name: Desplegar aplicación en AWS EC2
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_INSTANCE_IP }} "cd DevOps_SaludVital && git pull origin main && docker-compose down && docker-compose pull && docker-compose up -d"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_INSTANCE_IP }} "
+            if [ ! -d 'DevOps_SaludVital' ]; then
+              git clone ${{ secrets.REPO_SSH_URL }} DevOps_SaludVital
+              sleep 3
+            fi
+            cd DevOps_SaludVital
+            git pull origin main
+            sleep 2
+            docker-compose down
+            sleep 2
+            docker-compose pull
+            sleep 2
+            docker-compose up -d
+          "
