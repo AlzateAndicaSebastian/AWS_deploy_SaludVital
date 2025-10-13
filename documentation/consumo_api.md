@@ -5,7 +5,7 @@
 La API de VitalApp expone los siguientes endpoints:
 
 ### 1. Estado de la aplicación
-- **URL**: `/`
+- **URL**: `http://18.215.183.193:10000/`
 - **Método**: GET
 - **Descripción**: Verifica que la API esté funcionando correctamente
 - **Respuesta**: 
@@ -17,7 +17,7 @@ La API de VitalApp expone los siguientes endpoints:
   ```
 
 ### 2. Agendar cita médica
-- **URL**: `/citas`
+- **URL**: `http://18.215.183.193:10000/citas`
 - **Método**: POST
 - **Descripción**: Permite agendar una nueva cita médica
 - **Parámetros**:
@@ -32,7 +32,7 @@ La API de VitalApp expone los siguientes endpoints:
   ```
 
 ### 3. Obtener diagnóstico
-- **URL**: `/diagnosticos/{paciente}/{fecha}`
+- **URL**: `http://18.215.183.193:10000/diagnosticos/{paciente}/{fecha}`
 - **Método**: GET
 - **Descripción**: Obtiene el diagnóstico de una cita específica
 - **Parámetros**:
@@ -46,7 +46,7 @@ La API de VitalApp expone los siguientes endpoints:
   ```
 
 ### 4. Obtener alertas
-- **URL**: `/alertas/{paciente}`
+- **URL**: `http://18.215.183.193:10000/alertas/{paciente}`
 - **Método**: GET
 - **Descripción**: Obtiene las alertas de salud para un paciente específico
 - **Parámetros**:
@@ -65,12 +65,12 @@ La API de VitalApp expone los siguientes endpoints:
 
 ```javascript
 // Obtener el estado de la aplicación
-fetch('http://localhost:10000/')
+fetch('http://18.215.183.193:10000/')
   .then(response => response.json())
   .then(data => console.log(data));
 
 // Agendar una cita
-fetch('http://localhost:10000/citas', {
+fetch('http://18.215.183.193:10000/citas', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -85,15 +85,20 @@ fetch('http://localhost:10000/citas', {
   .then(data => console.log(data));
 
 // Obtener diagnóstico
-fetch('http://localhost:10000/diagnosticos/Juan Pérez/2025-04-10')
+fetch('http://18.215.183.193:10000/diagnosticos/Juan Pérez/2025-04-10')
   .then(response => response.json())
   .then(data => console.log(data));
 
 // Obtener alertas
-fetch('http://localhost:10000/alertas/Juan Pérez')
+fetch('http://18.215.183.193:10000/alertas/Juan Pérez')
   .then(response => response.json())
   .then(data => console.log(data));
 ```
+
+## Notas
+- Cambia la IP por la de tu instancia si es diferente.
+- Asegúrate de que el puerto 10000 esté abierto en el grupo de seguridad de AWS.
+- Puedes acceder a la documentación interactiva de la API en: `http://18.215.183.193:10000/docs`
 
 ## Consideraciones de seguridad
 

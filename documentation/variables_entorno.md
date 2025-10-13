@@ -2,7 +2,7 @@
 
 ## Configuración de Variables de Entorno
 
-La aplicación VitalApp soporta variables de entorno para personalizar su comportamiento. La variable principal es `frontDesplegado` que permite especificar la URL del frontend que consume la API.
+La aplicación VitalApp soporta variables de entorno para personalizar su comportamiento. La variable principal es `frontDesplegado`, que permite especificar la URL del frontend que consume la API.
 
 ## Variable frontDesplegado
 
@@ -18,7 +18,7 @@ Esta variable define qué orígenes están permitidos para hacer solicitudes COR
 
 #### En Docker Compose:
 
-En el archivo `docker-compose.yml`:
+En el archivo `docker-compose.yml` del proyecto `AWS_deploy_SaludVital`:
 
 ```yaml
 environment:
@@ -50,3 +50,14 @@ set frontDesplegado=https://tu-front-end.com
 La configuración de CORS es fundamental para la seguridad de la aplicación. Permite controlar qué sitios web pueden interactuar con la API, previniendo ataques de tipo Cross-Site Request Forgery (CSRF).
 
 Cuando se despliega la aplicación en producción, se recomienda establecer un valor específico para `frontDesplegado` en lugar de usar "*" para mayor seguridad.
+
+## Ejemplo de configuración recomendada para producción
+
+```yaml
+environment:
+  - frontDesplegado=https://vitalApp-front-end.com
+```
+
+## Relación con el pipeline CI/CD
+
+El pipeline CI/CD utiliza esta variable para configurar CORS en el despliegue automático en AWS. Asegúrate de definirla correctamente en el archivo `.env` o en el `docker-compose.yml` antes de desplegar.

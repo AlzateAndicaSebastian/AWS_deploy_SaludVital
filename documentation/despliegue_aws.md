@@ -34,10 +34,11 @@ La instancia AWS debe tener el repositorio clonado y configurado:
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/sebastianalzateandica/DevOps_SaludVital.git
+# Repositorio actualizado
+ git clone https://github.com/AlzateAndicaSebastian/AWS_deploy_SaludVital.git
 
 # Navegar al directorio del proyecto
-cd DevOps_SaludVital
+cd AWS_deploy_SaludVital
 
 # Configurar las credenciales de Docker Hub (si es necesario)
 echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
@@ -61,15 +62,10 @@ Para habilitar el despliegue en AWS, se necesita configurar lo siguiente en el w
    - `AWS_REGION`: Región de AWS (ej. us-east-1)
    - `AWS_EC2_INSTANCE_IP`: IP de la instancia EC2
    - `SSH_PRIVATE_KEY`: Clave privada para acceder a la instancia
+   - `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN`: Credenciales de Docker Hub
 
 2. **Actualización del workflow CI/CD**:
-   Añadir los pasos necesarios para el despliegue en AWS en el job `deploy`
-
-## Método de despliegue en AWS
-
-### Opción 1: Despliegue mediante SSH
-
-Se puede configurar el workflow para conectarse a la instancia AWS mediante SSH y ejecutar los comandos de despliegue:
+   El job `deploy-aws` realiza el despliegue automático usando SSH y Docker Compose:
 
 ```yaml
 deploy-aws:
@@ -83,33 +79,11 @@ deploy-aws:
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd DevOps_SaludVital
+          cd AWS_deploy_SaludVital
           git pull origin main
           docker-compose down
           docker-compose pull
           docker-compose up -d
-```
-
-### Opción 2: Despliegue mediante AWS CLI
-
-Alternativamente, se puede usar AWS CLI para desplegar en servicios como ECS o EKS:
-
-```yaml
-deploy-aws:
-  needs: docker
-  runs-on: ubuntu-latest
-  steps:
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-    
-    - name: Deploy to AWS ECS
-      run: |
-        # Comandos para desplegar en ECS
-        aws ecs update-service --cluster salud-vital-cluster --service salud-vital-service --force-new-deployment
 ```
 
 ## Configuración de variables de entorno en AWS
@@ -133,10 +107,12 @@ Después del despliegue, puedes verificar que la aplicación esté funcionando c
 
 ```bash
 # Verificar que los contenedores estén corriendo
+cd AWS_deploy_SaludVital
+
 docker-compose ps
 
 # Verificar los logs de la aplicación
-docker-compose logs vitalapp
+docker-compose logs
 
 # Probar la API
 curl http://localhost:10000/
@@ -147,6 +123,9 @@ curl http://localhost:10000/
 Una vez desplegada, la aplicación estará disponible en:
 - **URL**: `http://[AWS_EC2_INSTANCE_IP]:10000`
 - **Puerto**: 10000 (configurado en el docker-compose.yml)
+
+Ejemplo para tu instancia actual:
+- **URL**: `http://18.215.183.193:10000/`
 
 ## Consideraciones de seguridad
 
