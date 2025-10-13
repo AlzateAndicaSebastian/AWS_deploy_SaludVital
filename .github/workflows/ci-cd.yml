@@ -129,6 +129,9 @@ jobs:
       - name: Desplegar aplicación en AWS EC2
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_INSTANCE_IP }} "
+            mkdir -p ~/.ssh
+            echo '${{ secrets.SSH_PRIVATE_KEY }}' > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
             ssh-keyscan github.com >> ~/.ssh/known_hosts
             if [ ! -d 'DevOps_SaludVital' ]; then
               git clone ${{ secrets.REPO_SSH_URL }} DevOps_SaludVital
