@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="-----| ensayo deploy #7 --|&#10;variables de entorno del repositorio y de la llave ssh de github agregados para que la instancia tenga permisos de depliegue desde github">
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="-----| ensayo deploy #8 --|&#10;se quita la copia de la ssh en la instancia, ateniendose solo al runner de github">
       <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -56,7 +56,7 @@
       <updated>1760223815970</updated>
       <workItem from="1760223817189" duration="529000" />
       <workItem from="1760224377550" duration="1337000" />
-      <workItem from="1760301870416" duration="19098000" />
+      <workItem from="1760301870416" duration="20227000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -130,7 +130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760319500146</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="-----| ensayo deploy #8 --|&#10;se quita la copia de la ssh en la instancia, ateniendose solo al runner de github">
+      <option name="closed" value="true" />
+      <created>1760330804079</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1760330804079</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,6 +165,7 @@
     <MESSAGE value="-----| ensayo deploy #6 -- se añade url de entorno del repositorio  ssh para ser agregado y clonado en la instancia de aws" />
     <MESSAGE value="-----| ensayo deploy #7 --|" />
     <MESSAGE value="-----| ensayo deploy #7 --|&#10;variables de entorno del repositorio y de la llave ssh de github agregados para que la instancia tenga permisos de depliegue desde github" />
-    <option name="LAST_COMMIT_MESSAGE" value="-----| ensayo deploy #7 --|&#10;variables de entorno del repositorio y de la llave ssh de github agregados para que la instancia tenga permisos de depliegue desde github" />
+    <MESSAGE value="-----| ensayo deploy #8 --|&#10;se quita la copia de la ssh en la instancia, ateniendose solo al runner de github" />
+    <option name="LAST_COMMIT_MESSAGE" value="-----| ensayo deploy #8 --|&#10;se quita la copia de la ssh en la instancia, ateniendose solo al runner de github" />
   </component>
 </project>

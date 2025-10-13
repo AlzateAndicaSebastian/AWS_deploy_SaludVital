@@ -118,18 +118,23 @@ jobs:
             echo "Error: La clave privada SSH no está configurada en los secretos de GitHub." >&2
             exit 1
           fi
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ls -l ~/.ssh/id_rsa  # Verifica que el archivo se creó correctamente
 
-      - name: Agregar host remoto a known_hosts
+      - name: Verificar formato de la clave privada
         run: |
-          ssh-keyscan ${{ secrets.AWS_EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
+          head -5 ~/.ssh/id_rsa
+          file ~/.ssh/id_rsa
 
+      # Paso alternativo: Desplegar aplicación en AWS EC2 usando appleboy/ssh-action
       - name: Desplegar aplicación en AWS EC2
-        run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_INSTANCE_IP }} "
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.AWS_EC2_INSTANCE_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
             if [ ! -d 'DevOps_SaludVital' ]; then
               git clone ${{ secrets.REPO_SSH_URL }} DevOps_SaludVital
               sleep 3
@@ -142,4 +147,3 @@ jobs:
             docker-compose pull
             sleep 2
             docker-compose up -d
-          "
