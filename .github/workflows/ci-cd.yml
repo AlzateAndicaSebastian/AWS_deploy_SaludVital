@@ -73,6 +73,13 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
+      # Paso 1.5: Instalar Docker Compose
+      - name: Instalar Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
       # Paso 2: Desplegar la aplicación usando docker-compose
       - name: Desplegar aplicación
         run: |
@@ -89,6 +96,13 @@ jobs:
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
+
+      # Paso 1.5: Instalar Docker Compose
+      - name: Instalar Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
 
       - name: Configurar las credenciales de AWS
         uses: aws-actions/configure-aws-credentials@v1
