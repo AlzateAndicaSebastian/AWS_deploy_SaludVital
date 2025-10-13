@@ -139,11 +139,11 @@ jobs:
 
       - name: Clonar repositorio por SSH
         run: |
-          if [ ! -d 'DevOps_SaludVital' ]; then
-            git clone git@github.com:AlzateAndicaSebastian/DevOps_SaludVital.git DevOps_SaludVital
+          if [ ! -d 'AWS_deploy_SaludVital' ]; then
+            git clone git@github.com:AlzateAndicaSebastian/AWS_deploy_SaludVital.git AWS_deploy_SaludVital
             sleep 3
           fi
-          cd DevOps_SaludVital
+          cd AWS_deploy_SaludVital
           git pull origin main
           sleep 2
           docker-compose down
