@@ -113,8 +113,14 @@ jobs:
 
       - name: Configurar clave privada SSH
         run: |
+          mkdir -p ~/.ssh
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "Error: La clave privada SSH no está configurada en los secretos de GitHub." >&2
+            exit 1
+          fi
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ls -l ~/.ssh/id_rsa  # Verifica que el archivo se creó correctamente
 
       - name: Agregar host remoto a known_hosts
         run: |
