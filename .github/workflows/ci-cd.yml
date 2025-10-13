@@ -127,23 +127,27 @@ jobs:
           head -5 ~/.ssh/id_rsa
           file ~/.ssh/id_rsa
 
-      # Paso alternativo: Desplegar aplicación en AWS EC2 usando appleboy/ssh-action
-      - name: Desplegar aplicación en AWS EC2
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.AWS_EC2_INSTANCE_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            if [ ! -d 'DevOps_SaludVital' ]; then
-              git clone ${{ secrets.REPO_SSH_URL }} DevOps_SaludVital
-              sleep 3
-            fi
-            cd DevOps_SaludVital
-            git pull origin main
-            sleep 2
-            docker-compose down
-            sleep 2
-            docker-compose pull
-            sleep 2
-            docker-compose up -d
+      - name: Configurar SSH para git clone
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Verificar clave SSH con GitHub
+        run: ssh -i ~/.ssh/id_ed25519 -T git@github.com || true
+
+      - name: Clonar repositorio por SSH
+        run: |
+          if [ ! -d 'DevOps_SaludVital' ]; then
+            git clone git@github.com:AlzateAndicaSebastian/DevOps_SaludVital.git DevOps_SaludVital
+            sleep 3
+          fi
+          cd DevOps_SaludVital
+          git pull origin main
+          sleep 2
+          docker-compose down
+          sleep 2
+          docker-compose pull
+          sleep 2
+          docker-compose up -d
