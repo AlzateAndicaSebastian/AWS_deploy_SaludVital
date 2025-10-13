@@ -81,30 +81,31 @@ jobs:
 
   # Trabajo de despliegue en AWS
   deploy-aws:
-    needs: docker  # Este trabajo se ejecuta solo si el trabajo 'docker' es exitoso
+    needs: docker
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
-      # Paso 1: Configurar las credenciales de AWS
-      - name: Configure AWS credentials
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar las credenciales de AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Paso 2: Desplegar en instancia EC2 mediante SSH
-      - name: Deploy to AWS EC2
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.AWS_EC2_INSTANCE_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd DevOps_SaludVital
-            git pull origin main
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d
+      - name: Configurar clave privada SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Agregar host remoto a known_hosts
+        run: |
+          ssh-keyscan ${{ secrets.AWS_EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
+
+      - name: Desplegar aplicación en AWS EC2
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.AWS_EC2_INSTANCE_IP }} "cd DevOps_SaludVital && git pull origin main && docker-compose down && docker-compose pull && docker-compose up -d"
