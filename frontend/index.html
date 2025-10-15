@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalApp - Sistema de Gestión Médica</title>
+   
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🏥 VitalApp</h1>
+        <p class="subtitle">Sistema de Gestión Médica Integral</p>
+        <div id="apiStatus" class="api-status">Conectando...</div>
+    </header>
+
+    <div class="crud-sections">
+        <!-- Sección de Citas -->
+        <div class="section">
+            <h2>📅 Gestión de Citas</h2>
+            <div class="form-group">
+                <label for="paciente">Paciente:</label>
+                <input type="text" id="paciente" placeholder="Nombre del paciente">
+            </div>
+            <div class="form-group">
+                <label for="medico">Médico:</label>
+                <input type="text" id="medico" placeholder="Nombre del médico">
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha">
+            </div>
+            <button onclick="agendarCita()">Agendar Cita</button>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <h3>Consultar Diagnóstico</h3>
+                <input type="text" id="consultaPaciente" placeholder="Paciente">
+                <input type="date" id="consultaFecha" style="margin-top: 10px;">
+                <button onclick="obtenerDiagnostico()" style="margin-top: 10px;">Consultar Diagnóstico</button>
+            </div>
+
+            <div id="resultadosCitas" class="results"></div>
+        </div>
+
+        <!-- Sección de Resultados Médicos -->
+        <div class="section">
+            <h2>📊 Resultados Médicos</h2>
+            <div class="form-group">
+                <label for="resultadoPaciente">Paciente:</label>
+                <input type="text" id="resultadoPaciente" placeholder="Nombre del paciente">
+            </div>
+            <div class="form-group">
+                <label for="examen">Tipo de Examen:</label>
+                <select id="examen">
+                    <option value="glucosa">Glucosa</option>
+                    <option value="presion">Presión Arterial</option>
+                    <option value="colesterol">Colesterol</option>
+                    <option value="hemograma">Hemograma</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="valor">Valor:</label>
+                <input type="number" id="valor" placeholder="Valor del examen">
+            </div>
+            <button onclick="agregarResultado()">Agregar Resultado</button>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <h3>Consultar Resultados</h3>
+                <input type="text" id="consultaResultados" placeholder="Paciente">
+                <button onclick="obtenerResultados()" style="margin-top: 10px;">Ver Resultados</button>
+            </div>
+
+            <div id="resultadosMedicos" class="results"></div>
+        </div>
+
+        <!-- Sección de Alertas -->
+        <div class="section">
+            <h2>⚠️ Alertas de Salud</h2>
+            <div class="form-group">
+                <label for="alertaPaciente">Paciente:</label>
+                <input type="text" id="alertaPaciente" placeholder="Nombre del paciente">
+            </div>
+            <button onclick="obtenerAlertas()">Ver Alertas</button>
+
+            <div id="alertasSalud" class="results">
+                <div class="alert info">
+                    Las alertas se generan automáticamente cuando los valores de los exámenes superan los umbrales establecidos.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>VitalApp &copy; 2025 - Sistema DevOps para Gestión Médica</p>
+    </footer>
+</div>
+
+<script>
+    // Configuración de la API
+    const API_BASE_URL = 'https://18.215.183.193:10000';
+
+    // Verificar estado de la API al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        verificarEstadoAPI();
+    });
+
+    // Función para verificar el estado de la API
+    async function verificarEstadoAPI() {
+        const statusElement = document.getElementById('apiStatus');
+        try {
+            const response = await fetch(`${API_BASE_URL}/`);
+            const data = await response.json();
+
+            if (data.status === 'active') {
+                statusElement.textContent = '✅ API Conectada';
+                statusElement.className = 'api-status';
+            } else {
+                statusElement.textContent = '❌ API No Disponible';
+                statusElement.className = 'api-status offline';
+            }
+        } catch (error) {
+            statusElement.textContent = '❌ Error de Conexión';
+            statusElement.className = 'api-status offline';
+            console.error('Error conectando a la API:', error);
+        }
+    }
+
+    // Función para agendar cita
+    async function agendarCita() {
+        const paciente = document.getElementById('paciente').value;
+        const medico = document.getElementById('medico').value;
+        const fecha = document.getElementById('fecha').value;
+        const resultadosDiv = document.getElementById('resultadosCitas');
+
+        if (!paciente || !medico || !fecha) {
+            mostrarResultado(resultadosDiv, 'Por favor complete todos los campos', 'error');
+            return;
+        }
+
+        try {
+            resultadosDiv.innerHTML = '<div class="loading">Agendando cita...</div>';
+
+            const response = await fetch(`${API_BASE_URL}/citas`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    paciente: paciente,
+                    medico: medico,
+                    fecha: fecha
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                mostrarResultado(resultadosDiv, `✅ ${data.message}`, 'success');
+                // Limpiar campos
+                document.getElementById('paciente').value = '';
+                document.getElementById('medico').value = '';
+                document.getElementById('fecha').value = '';
+            } else {
+                mostrarResultado(resultadosDiv, `❌ Error: ${data.detail}`, 'error');
+            }
+        } catch (error) {
+            mostrarResultado(resultadosDiv, `❌ Error de conexión: ${error.message}`, 'error');
+        }
+    }
+
+    // Función para obtener diagnóstico
+    async function obtenerDiagnostico() {
+        const paciente = document.getElementById('consultaPaciente').value;
+        const fecha = document.getElementById('consultaFecha').value;
+        const resultadosDiv = document.getElementById('resultadosCitas');
+
+        if (!paciente || !fecha) {
+            mostrarResultado(resultadosDiv, 'Por favor complete paciente y fecha', 'error');
+            return;
+        }
+
+        try {
+            resultadosDiv.innerHTML = '<div class="loading">Buscando diagnóstico...</div>';
+
+            const response = await fetch(`${API_BASE_URL}/diagnosticos/${encodeURIComponent(paciente)}/${fecha}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                mostrarResultado(resultadosDiv, `📋 Diagnóstico para ${paciente} (${fecha}):<br><strong>${data.diagnostico}</strong>`, 'success');
+            } else {
+                mostrarResultado(resultadosDiv, `❌ ${data.detail}`, 'error');
+            }
+        } catch (error) {
+            mostrarResultado(resultadosDiv, `❌ Error de conexión: ${error.message}`, 'error');
+        }
+    }
+
+    // Función para agregar resultado médico
+    async function agregarResultado() {
+        // Nota: Esta función simula agregar resultados ya que el endpoint no está expuesto
+        // En un caso real, necesitarías el endpoint correspondiente
+        const paciente = document.getElementById('resultadoPaciente').value;
+        const examen = document.getElementById('examen').value;
+        const valor = document.getElementById('valor').value;
+        const resultadosDiv = document.getElementById('resultadosMedicos');
+
+        if (!paciente || !valor) {
+            mostrarResultado(resultadosDiv, 'Por favor complete todos los campos', 'error');
+            return;
+        }
+
+        // Simulación - en un caso real harías fetch al endpoint correspondiente
+        mostrarResultado(resultadosDiv, `✅ Resultado agregado para ${paciente}: ${examen} = ${valor}`, 'success');
+
+        // Limpiar campos
+        document.getElementById('resultadoPaciente').value = '';
+        document.getElementById('valor').value = '';
+    }
+
+    // Función para obtener resultados médicos
+    async function obtenerResultados() {
+        // Nota: Esta función es simulada ya que el endpoint no está expuesto
+        const paciente = document.getElementById('consultaResultados').value;
+        const resultadosDiv = document.getElementById('resultadosMedicos');
+
+        if (!paciente) {
+            mostrarResultado(resultadosDiv, 'Por favor ingrese el nombre del paciente', 'error');
+            return;
+        }
+
+        // Simulación de resultados
+        const resultadosSimulados = [
+            { examen: 'glucosa', valor: 95 },
+            { examen: 'presion', valor: 120 }
+        ];
+
+        let html = `<h4>Resultados para ${paciente}:</h4>`;
+        resultadosSimulados.forEach(result => {
+            html += `<div class="alert ${result.valor > 110 ? 'warning' : 'success'}">${result.examen}: ${result.valor}</div>`;
+        });
+
+        resultadosDiv.innerHTML = html;
+    }
+
+    // Función para obtener alertas
+    async function obtenerAlertas() {
+        const paciente = document.getElementById('alertaPaciente').value;
+        const alertasDiv = document.getElementById('alertasSalud');
+
+        if (!paciente) {
+            mostrarResultado(alertasDiv, 'Por favor ingrese el nombre del paciente', 'error');
+            return;
+        }
+
+        try {
+            alertasDiv.innerHTML = '<div class="loading">Buscando alertas...</div>';
+
+            const response = await fetch(`${API_BASE_URL}/alertas/${encodeURIComponent(paciente)}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                if (data.alertas && data.alertas.length > 0) {
+                    let html = `<h4>Alertas para ${paciente}:</h4>`;
+                    data.alertas.forEach(alerta => {
+                        html += `<div class="alert warning">⚠️ ${alerta}</div>`;
+                    });
+                    alertasDiv.innerHTML = html;
+                } else {
+                    mostrarResultado(alertasDiv, `✅ No hay alertas para ${paciente}`, 'success');
+                }
+            } else {
+                mostrarResultado(alertasDiv, `❌ ${data.detail}`, 'error');
+            }
+        } catch (error) {
+            mostrarResultado(alertasDiv, `❌ Error de conexión: ${error.message}`, 'error');
+        }
+    }
+
+    // Función auxiliar para mostrar resultados
+    function mostrarResultado(element, mensaje, tipo) {
+        element.innerHTML = `<div class="alert ${tipo}">${mensaje}</div>`;
+    }
+</script>
+</body>
+</html>
