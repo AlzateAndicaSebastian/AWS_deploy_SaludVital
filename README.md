@@ -1,4 +1,4 @@
-# Salud Vital - VitalApp AlzateAndica-Aranzazu-Carbajal
+# Salud Vital - VitalApp AlzateAndica-Aranzazu-Carvajal
 
 "Primera ejecución del pipeline."
 
