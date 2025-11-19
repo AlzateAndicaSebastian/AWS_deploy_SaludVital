@@ -30,7 +30,7 @@ La variable principal es `frontDesplegado`, que controla los orígenes permitido
 
 ## Recomendaciones de seguridad
 - Configura correctamente el grupo de seguridad en AWS para exponer solo los puertos necesarios.
-- Usa HTTPS en producción.
+- Usa HTTPS en producción. hay que configurarlo (pendiente).
 - No expongas secretos en el código fuente.
 
 ---
