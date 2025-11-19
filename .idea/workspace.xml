@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="prueba de perfil de versiones del intellij">
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="persistencia agregada , metodos para guardar y cargar jsons en un directorio del SO personal en la ruta home/citas.json (~/citas.json)---&gt; recordar usar logica exclusiva para que un usuario no obtenga todas las citas existentes, sino las que le corresponden">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/cita_manager.py" afterDir="false" />
     </list>
@@ -39,6 +39,9 @@
     "accountId": "5150c9ac-b844-4a6a-88d9-ca1d35dc2830"
   }
 }]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -62,7 +65,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.27586207",
-    "settings.editor.selected.configurable": "Lingma",
+    "settings.editor.selected.configurable": "vcs.Git",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -91,7 +94,7 @@
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
-      <workItem from="1763569835998" duration="4730000" />
+      <workItem from="1763569835998" duration="9209000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -205,7 +208,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763571598543</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="persistencia agregada , metodos para guardar y cargar jsons en un directorio del SO personal en la ruta home/citas.json (~/citas.json)---&gt; recordar usar logica exclusiva para que un usuario no obtenga todas las citas existentes, sino las que le corresponden">
+      <option name="closed" value="true" />
+      <created>1763580448136</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1763580448136</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,6 +248,7 @@
     <MESSAGE value="-----| ensayo deploy #11 --|" />
     <MESSAGE value="-----| ensayo deploy #12 --|" />
     <MESSAGE value="prueba de perfil de versiones del intellij" />
-    <option name="LAST_COMMIT_MESSAGE" value="prueba de perfil de versiones del intellij" />
+    <MESSAGE value="persistencia agregada , metodos para guardar y cargar jsons en un directorio del SO personal en la ruta home/citas.json (~/citas.json)---&gt; recordar usar logica exclusiva para que un usuario no obtenga todas las citas existentes, sino las que le corresponden" />
+    <option name="LAST_COMMIT_MESSAGE" value="persistencia agregada , metodos para guardar y cargar jsons en un directorio del SO personal en la ruta home/citas.json (~/citas.json)---&gt; recordar usar logica exclusiva para que un usuario no obtenga todas las citas existentes, sino las que le corresponden" />
   </component>
 </project>

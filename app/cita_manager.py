@@ -1,6 +1,8 @@
 import json
 import os.path
 import os
+import secrets
+import string
 from datetime import datetime
 
 class CitaManager:
@@ -21,7 +23,7 @@ class CitaManager:
             "fecha": fecha,
             "registrado": datetime.now().isoformat()
         })
-        return True
+
 
     def _cita_existente(self, paciente, medico, fecha):
         return any(cita for cita in self.citas if cita["paciente"] == paciente and cita["fecha"] == fecha)
@@ -35,3 +37,40 @@ class CitaManager:
     def _save_data(self):
         with open (self.file_path, "w") as f :
             json.dump(self.citas,f,indent=4)
+
+    def _delete_cita(self, paciente, medico, fecha ,documento):
+        citas_actuales = len(self.citas)
+        self.citas = [
+            cita for cita in self.citas
+            if not (
+                cita["paciente"] == paciente and
+                cita["medico"] == medico and
+                cita["fecha"] == fecha and
+                cita["documento"] == documento
+            )
+        ]
+        if len(self.citas) < citas_actuales: # verificamos haber eliminado la cita (reducir el json)
+            self._save_data()  # guardamos la actualizacion
+            return  True  # si la eliminamos retorna true
+        return False # si no se encontro la cita a eliminar retorna false
+
+    def _generar_codigo_cita(self, length=6):
+        chars = string.ascii_uppercase + string.digits
+        return ''.join(secrets.choice(chars) for _ in range(length))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
