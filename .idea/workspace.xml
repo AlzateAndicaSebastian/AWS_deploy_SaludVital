@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;&#10;-- v1 (falta manejar concurrencia)">
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/cita_manager.py" afterDir="false" />
     </list>
@@ -94,7 +94,7 @@
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
-      <workItem from="1763569835998" duration="10445000" />
+      <workItem from="1763569835998" duration="14441000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -224,7 +224,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763584653437</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;registrado: almacena la fecha de registro&#10;codigo_cita: es generado por el back&#10;prioridad: es asignada segun lo seleccionado en el navbar de 8 opciones categoricas para la cita, ej : Emergencia = 1, (1 es el valor de prioridad.)&#10;&#10;-- v1 (falta manejar concurrencia)">
+      <option name="closed" value="true" />
+      <created>1763588191863</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1763588191863</updated>
+    </task>
+    <task id="LOCAL-00018" summary="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)">
+      <option name="closed" value="true" />
+      <created>1763588604914</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1763588604914</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,6 +274,8 @@
     <MESSAGE value="prueba de perfil de versiones del intellij" />
     <MESSAGE value="persistencia agregada , metodos para guardar y cargar jsons en un directorio del SO personal en la ruta home/citas.json (~/citas.json)---&gt; recordar usar logica exclusiva para que un usuario no obtenga todas las citas existentes, sino las que le corresponden" />
     <MESSAGE value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;&#10;-- v1 (falta manejar concurrencia)" />
-    <option name="LAST_COMMIT_MESSAGE" value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;&#10;-- v1 (falta manejar concurrencia)" />
+    <MESSAGE value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;registrado: almacena la fecha de registro&#10;codigo_cita: es generado por el back&#10;prioridad: es asignada segun lo seleccionado en el navbar de 8 opciones categoricas para la cita, ej : Emergencia = 1, (1 es el valor de prioridad.)&#10;&#10;-- v1 (falta manejar concurrencia)" />
+    <MESSAGE value="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)" />
+    <option name="LAST_COMMIT_MESSAGE" value="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)" />
   </component>
 </project>
