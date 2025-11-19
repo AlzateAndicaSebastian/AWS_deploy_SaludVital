@@ -65,7 +65,7 @@ Para habilitar el despliegue en AWS, se deben configurar los siguientes secrets 
 - `AWS_SECRET_ACCESS_KEY`: Clave secreta de AWS
 - `AWS_REGION`: Región de AWS
 - `AWS_EC2_INSTANCE_IP`: IP de la instancia EC2
-- `SSH_PRIVATE_KEY`: Clave privada para acceder a la instancia
+- `SSH_PRIVATE_KEY`: Clave privada para acceder a la instancia, esta en el repo local
 
 ## Documentación
 
