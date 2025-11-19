@@ -14,15 +14,21 @@ class CitaManager:
         self.file_path = file_path
         self.citas = self._load_data()
 
-    def agendar_cita(self, paciente, medico, fecha):
-        if self._cita_existente(paciente, medico, fecha):
-            raise ValueError("Cita duplicada.")
+    def agendar_cita(self, paciente, medico, fecha, documento, tipoCita, motivoPaciente):
+        # if self._cita_existente(paciente, medico, fecha):
+        #     raise ValueError("Cita duplicada.")  para esta logica se permiten varias citas en la misma fecha
         self.citas.append({
             "paciente": paciente,
             "medico": medico,
             "fecha": fecha,
-            "registrado": datetime.now().isoformat()
+            "documento": documento,
+            "registrado": datetime.now().isoformat(), # fecha de registro
+            "codigo_cita": self._generar_codigo_cita(), # codigo de cita unico
+            "tipoCita": tipoCita,
+            "motivoPaciente": motivoPaciente, # breve descripcion del paciente de su motivo de consulta
+            "prioridad": self._calcular_prioridad(tipoCita)
         })
+        self._save_data() # persistencia en el archivo
 
 
     def _cita_existente(self, paciente, medico, fecha):
@@ -31,8 +37,11 @@ class CitaManager:
     def _load_data(self):
         if not os.path.exists(self.file_path):
             return []
-        with open (self.file_path, "r") as f:
-            return json.load(f)
+        try:
+            with open(self.file_path, "r") as f:
+                return json.load(f)
+        except Exception:
+            return []
 
     def _save_data(self):
         with open (self.file_path, "w") as f :
@@ -58,6 +67,28 @@ class CitaManager:
         chars = string.ascii_uppercase + string.digits
         return ''.join(secrets.choice(chars) for _ in range(length))
 
+    def _calcular_prioridad(self, tipoCita): # para evitar errores estos tipos deben estar pre-escritos en el html en un navbar
+        if tipoCita == "Emergencia":
+            return 1
+        elif tipoCita == "Urgencia":
+            return 2
+        elif tipoCita == "Consulta":
+            return 3
+        elif tipoCita == "Control":
+            return 4
+        elif tipoCita == "Reevaluacion":
+            return 5
+        elif tipoCita == "Revaloracion":
+            return 6
+        elif tipoCita == "Revision":
+            return 7
+        elif tipoCita == "Examen":
+            return 8
+        else:
+            return -1 # prioridad desconocida o erronea
+
+    def _obtener_citas_paciente(self,documento):
+        return [cita for cita in self.citas if cita["documento"] == documento]
 
 
 
