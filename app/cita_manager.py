@@ -5,6 +5,10 @@ import secrets
 import string
 from datetime import datetime
 
+# Por regla de negocio las citas seran asignadas por una secretaria como lo demanda este CRUD
+# agendando las citas si el paciente se presenta personalmente, de el mismo modo
+# las citas solo podran ser canceladas si el cliente va fisicamente y pide cancelarla (eliminar la cita)
+
 class CitaManager:
     def __init__(self, file_path="citas.json"):
         # si no se encuentra el directorio de persistencia, se crea uno en el home del user
@@ -19,7 +23,7 @@ class CitaManager:
         #     raise ValueError("Cita duplicada.")  para esta logica se permiten varias citas en la misma fecha
         self.citas.append({
             "paciente": paciente,
-            "medico": medico,
+            "medico": medico, # los nombres de los medicos tambien estan asignados en el navbar del front
             "fecha": fecha,
             "documento": documento,
             "registrado": datetime.now().isoformat(), # fecha de registro
