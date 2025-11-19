@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="-----| ensayo deploy #12 --|">
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="prueba de perfil de versiones del intellij">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/cita_manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +27,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "AlzateAndicaSebastian"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/AlzateAndicaSebastian/AWS_deploy_SaludVital.git",
+    "accountId": "5150c9ac-b844-4a6a-88d9-ca1d35dc2830"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -49,7 +62,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.27586207",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "Lingma",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -78,7 +91,7 @@
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
-      <workItem from="1763569835998" duration="1662000" />
+      <workItem from="1763569835998" duration="4730000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -184,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760336686529</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="prueba de perfil de versiones del intellij">
+      <option name="closed" value="true" />
+      <created>1763571598543</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1763571598543</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,16 +236,7 @@
     <MESSAGE value="-----| ensayo deploy #9 --|&#10;Verificar el formato del archivo generado en el runner antes de intentar la conexión SSH." />
     <MESSAGE value="-----| ensayo deploy #11 --|" />
     <MESSAGE value="-----| ensayo deploy #12 --|" />
-    <option name="LAST_COMMIT_MESSAGE" value="-----| ensayo deploy #12 --|" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/main.py</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="prueba de perfil de versiones del intellij" />
+    <option name="LAST_COMMIT_MESSAGE" value="prueba de perfil de versiones del intellij" />
   </component>
 </project>
