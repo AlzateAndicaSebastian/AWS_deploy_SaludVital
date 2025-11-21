@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)">
-      <change afterPath="$PROJECT_DIR$/app/routers/citas_router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/managers/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/cita_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/citas_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/citas_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cita_manager.py" afterDir="false" />
-    </list>
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +60,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "pruebasAutomatizadas",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/app/managers",
+    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -86,6 +78,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/unit_tests" />
       <recent name="$PROJECT_DIR$/app/managers" />
     </key>
   </component>
@@ -109,7 +102,7 @@
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
-      <workItem from="1763569835998" duration="29244000" />
+      <workItem from="1763569835998" duration="29639000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -271,7 +264,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763695228542</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )">
+      <option name="closed" value="true" />
+      <created>1763751437367</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1763751437367</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,6 +310,7 @@
     <MESSAGE value="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)" />
     <MESSAGE value="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)" />
     <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)" />
-    <option name="LAST_COMMIT_MESSAGE" value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)" />
+    <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
+    <option name="LAST_COMMIT_MESSAGE" value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
   </component>
 </project>
