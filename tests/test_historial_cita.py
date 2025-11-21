@@ -1,4 +1,4 @@
-from app.historial_cita import HistorialCita
+from app.managers.historial_cita import HistorialCita
 
 def test_registrar_y_obtener_diagnostico():
     hc = HistorialCita()

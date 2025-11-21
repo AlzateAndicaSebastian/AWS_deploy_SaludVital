@@ -1,5 +1,5 @@
 import pytest
-from app.cita_manager import CitaManager
+from app.managers.cita_manager import CitaManager
 
 def test_agendar_cita_exito():
     cm = CitaManager()

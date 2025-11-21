@@ -59,11 +59,11 @@ class CitaManager:
             except Exception:
                 return []
 
-def _save_data(self):
-    lock_path = self.file_path + ".lock"
-    with FileLock(lock_path):
-        with open(self.file_path, "w") as f:
-            json.dump(self.citas, f, indent=4)
+    def _save_data(self):
+        lock_path = self.file_path + ".lock"
+        with FileLock(lock_path):
+            with open(self.file_path, "w") as f:
+                json.dump(self.citas, f, indent=4)
 
     def _delete_cita(self, paciente, medico, fecha ,documento):
         citas_actuales = len(self.citas)

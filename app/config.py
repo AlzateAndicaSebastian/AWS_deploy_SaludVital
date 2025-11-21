@@ -1,0 +1,7 @@
+BASE_DATA_PATH= "~/memoryApps/saludVital"
+USERS_FILE= f"{BASE_DATA_PATH}/users.json"
+CITAS_FILE= f"{BASE_DATA_PATH}/citas.json"
+EXAMENES_FILE= f"{BASE_DATA_PATH}/examenes.json"
+RESULTADOS_FILE= f"{BASE_DATA_PATH}/resultados.json"
+HISTORIAL_FILE= f"{BASE_DATA_PATH}/historial_citas.json"
+ALERTAS_FILE= f"{BASE_DATA_PATH}/alertas.json"

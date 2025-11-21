@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from app.cita_manager import CitaManager
-from app.historial_cita import HistorialCita
-from app.resultados import Resultados
-from app.alertas import Alertas
+from app.managers.cita_manager import CitaManager
+from app.managers.historial_cita import HistorialCita
+from app.managers.resultados import Resultados
+from app.managers.alertas import Alertas
 
 app = FastAPI(title="VitalApp API")
 

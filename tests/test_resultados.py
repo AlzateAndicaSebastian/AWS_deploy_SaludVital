@@ -1,4 +1,4 @@
-from app.resultados import Resultados
+from app.managers.resultados import Resultados
 
 def test_agregar_y_obtener_resultados():
     r = Resultados()

@@ -1,4 +1,4 @@
-from app.alertas import Alertas
+from app.managers.alertas import Alertas
 
 def test_generar_alertas_sin_alertas():
     a = Alertas()

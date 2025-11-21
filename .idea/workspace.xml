@@ -4,14 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)">
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)">
+      <change afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/managers/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/citas_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/cita_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/alertas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/alertas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/cita_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/historial_cita.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/historial_cita.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resultados.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/resultados.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_alertas.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_alertas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cita_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_historial_cita.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_historial_cita.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_resultados.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_resultados.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
     <envs>
@@ -56,7 +74,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "pruebasAutomatizadas",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana",
+    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/app/managers",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -72,6 +90,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/managers" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -94,7 +115,7 @@
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
-      <workItem from="1763569835998" duration="14441000" />
+      <workItem from="1763569835998" duration="21798000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -240,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763588604914</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)">
+      <option name="closed" value="true" />
+      <created>1763590601242</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1763590601242</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,6 +305,7 @@
     <MESSAGE value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;&#10;-- v1 (falta manejar concurrencia)" />
     <MESSAGE value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;registrado: almacena la fecha de registro&#10;codigo_cita: es generado por el back&#10;prioridad: es asignada segun lo seleccionado en el navbar de 8 opciones categoricas para la cita, ej : Emergencia = 1, (1 es el valor de prioridad.)&#10;&#10;-- v1 (falta manejar concurrencia)" />
     <MESSAGE value="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)" />
-    <option name="LAST_COMMIT_MESSAGE" value="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)" />
+    <MESSAGE value="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)" />
+    <option name="LAST_COMMIT_MESSAGE" value="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)" />
   </component>
 </project>
