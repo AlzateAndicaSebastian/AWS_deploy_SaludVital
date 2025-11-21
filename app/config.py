@@ -1,7 +1,39 @@
-BASE_DATA_PATH= "~/memoryApps/saludVital"
-USERS_FILE= f"{BASE_DATA_PATH}/users.json"
-CITAS_FILE= f"{BASE_DATA_PATH}/citas.json"
-EXAMENES_FILE= f"{BASE_DATA_PATH}/examenes.json"
-RESULTADOS_FILE= f"{BASE_DATA_PATH}/resultados.json"
-HISTORIAL_FILE= f"{BASE_DATA_PATH}/historial_citas.json"
-ALERTAS_FILE= f"{BASE_DATA_PATH}/alertas.json"
+from pathlib import Path
+import jwt
+import os
+from datetime import datetime, timedelta
+
+BASE_DATA_DIR = Path("~/memoryApps/saludVital/").expanduser()
+BASE_DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+# Clave secreta para JWT (debería estar en variables de entorno en producción)
+SECRET_KEY = os.getenv("SECRET_KEY", "clave_secreta_por_defecto")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+def crear_token_acceso(data: dict):
+    """
+    Crea un token de acceso JWT con los datos proporcionados.
+    Incluye el documento del paciente en el token.
+    """
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def decodificar_token_acceso(token: str):
+    """
+    Decodifica un token de acceso JWT y devuelve los datos.
+    """
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    return payload
+
+def verificar_documento_paciente(documento: str):
+    """
+    Verifica si el documento del paciente está registrado.
+    Esta es una implementación básica que verifica si existe
+    un archivo JSON para el paciente.
+    """
+    paciente_file_path = BASE_DATA_DIR / "citas" / f"{documento}.json"
+    return paciente_file_path.exists()

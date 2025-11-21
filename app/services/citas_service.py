@@ -8,7 +8,7 @@ class CitasService:
         return self.citaManagerInstance.agendar_cita(paciente, medico, fecha, documento, tipoCita, motivoPaciente)
 
     def eliminar_cita_service(self,paciente,medico,fecha,documento):
-        return self.citaManagerInstance._delete_cita(paciente, medico, fecha, documento)
+        return self.citaManagerInstance.eliminar_cita(paciente, medico, fecha, documento)
 
     def  obtener_citas_paciente_service(self,documento):
-        return self.citaManagerInstance._obtener_citas_paciente(documento)
+        return self.citaManagerInstance.obtener_citas_paciente(documento)

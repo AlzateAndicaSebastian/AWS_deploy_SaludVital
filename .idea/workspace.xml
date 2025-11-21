@@ -4,20 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)">
-      <change afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/managers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/citas_service.py" afterDir="false" />
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)">
+      <change afterPath="$PROJECT_DIR$/app/routers/citas_router.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/alertas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/alertas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/cita_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/historial_cita.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/historial_cita.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resultados.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/resultados.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_alertas.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_alertas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/managers/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/cita_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/citas_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/citas_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cita_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_historial_cita.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_historial_cita.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_resultados.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_resultados.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +109,7 @@
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
-      <workItem from="1763569835998" duration="21798000" />
+      <workItem from="1763569835998" duration="29244000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -269,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763590601242</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)">
+      <option name="closed" value="true" />
+      <created>1763695228542</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1763695228542</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -306,6 +308,7 @@
     <MESSAGE value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;registrado: almacena la fecha de registro&#10;codigo_cita: es generado por el back&#10;prioridad: es asignada segun lo seleccionado en el navbar de 8 opciones categoricas para la cita, ej : Emergencia = 1, (1 es el valor de prioridad.)&#10;&#10;-- v1 (falta manejar concurrencia)" />
     <MESSAGE value="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)" />
     <MESSAGE value="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)" />
-    <option name="LAST_COMMIT_MESSAGE" value="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)" />
+    <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)" />
+    <option name="LAST_COMMIT_MESSAGE" value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)" />
   </component>
 </project>

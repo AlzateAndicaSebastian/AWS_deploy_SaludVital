@@ -5,6 +5,7 @@ from app.managers.cita_manager import CitaManager
 from app.managers.historial_cita import HistorialCita
 from app.managers.resultados import Resultados
 from app.managers.alertas import Alertas
+from app.routers.citas_router import router as citas_router
 
 app = FastAPI(title="VitalApp API")
 
@@ -17,6 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Registrar los routers
+app.include_router(citas_router)
 
 # Crear instancias
 cm = CitaManager()
