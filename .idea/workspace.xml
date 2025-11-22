@@ -4,14 +4,55 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="-----| ensayo deploy #12 --|" />
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes">
+      <change afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="pruebasAutomatizadas" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "AlzateAndicaSebastian"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/AlzateAndicaSebastian/AWS_deploy_SaludVital.git",
+    "accountId": "5150c9ac-b844-4a6a-88d9-ca1d35dc2830"
+  }
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -23,10 +64,13 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python tests.Python tests for test_paciente_manager.TestPacienteManager.executor": "Run",
+    "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "serviciosLoginPacientes",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana",
+    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -35,6 +79,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.27586207",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -42,6 +87,57 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/unit_tests" />
+      <recent name="$PROJECT_DIR$/app/managers" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ws_DevopsPMV_SaludVital2025" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for test_paciente_manager.TestPacienteManager" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="ws_DevopsPMV_SaludVital2025" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/unit_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_paciente_manager.TestPacienteManager&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python tests.Python tests for test_paciente_manager.TestPacienteManager" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -62,7 +158,8 @@
       <workItem from="1760223817189" duration="529000" />
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
-      <workItem from="1763568592599" duration="901000" />
+      <workItem from="1763568592599" duration="1211000" />
+      <workItem from="1763569835998" duration="42553000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -168,7 +265,87 @@
       <option name="project" value="LOCAL" />
       <updated>1760336686529</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="prueba de perfil de versiones del intellij">
+      <option name="closed" value="true" />
+      <created>1763571598543</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1763571598543</updated>
+    </task>
+    <task id="LOCAL-00015" summary="persistencia agregada , metodos para guardar y cargar jsons en un directorio del SO personal en la ruta home/citas.json (~/citas.json)---&gt; recordar usar logica exclusiva para que un usuario no obtenga todas las citas existentes, sino las que le corresponden">
+      <option name="closed" value="true" />
+      <created>1763580448136</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1763580448136</updated>
+    </task>
+    <task id="LOCAL-00016" summary="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;&#10;-- v1 (falta manejar concurrencia)">
+      <option name="closed" value="true" />
+      <created>1763584653437</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1763584653437</updated>
+    </task>
+    <task id="LOCAL-00017" summary="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;registrado: almacena la fecha de registro&#10;codigo_cita: es generado por el back&#10;prioridad: es asignada segun lo seleccionado en el navbar de 8 opciones categoricas para la cita, ej : Emergencia = 1, (1 es el valor de prioridad.)&#10;&#10;-- v1 (falta manejar concurrencia)">
+      <option name="closed" value="true" />
+      <created>1763588191863</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1763588191863</updated>
+    </task>
+    <task id="LOCAL-00018" summary="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)">
+      <option name="closed" value="true" />
+      <created>1763588604914</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1763588604914</updated>
+    </task>
+    <task id="LOCAL-00019" summary="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)">
+      <option name="closed" value="true" />
+      <created>1763590601242</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1763590601242</updated>
+    </task>
+    <task id="LOCAL-00020" summary="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)">
+      <option name="closed" value="true" />
+      <created>1763695228542</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1763695228542</updated>
+    </task>
+    <task id="LOCAL-00021" summary="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )">
+      <option name="closed" value="true" />
+      <created>1763751437367</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1763751437367</updated>
+    </task>
+    <task id="LOCAL-00022" summary="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1">
+      <option name="closed" value="true" />
+      <created>1763751870553</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1763751870553</updated>
+    </task>
+    <task id="LOCAL-00023" summary="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes">
+      <option name="closed" value="true" />
+      <created>1763775110276</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1763775110276</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,16 +376,20 @@
     <MESSAGE value="-----| ensayo deploy #9 --|&#10;Verificar el formato del archivo generado en el runner antes de intentar la conexión SSH." />
     <MESSAGE value="-----| ensayo deploy #11 --|" />
     <MESSAGE value="-----| ensayo deploy #12 --|" />
-    <option name="LAST_COMMIT_MESSAGE" value="-----| ensayo deploy #12 --|" />
+    <MESSAGE value="prueba de perfil de versiones del intellij" />
+    <MESSAGE value="persistencia agregada , metodos para guardar y cargar jsons en un directorio del SO personal en la ruta home/citas.json (~/citas.json)---&gt; recordar usar logica exclusiva para que un usuario no obtenga todas las citas existentes, sino las que le corresponden" />
+    <MESSAGE value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;&#10;-- v1 (falta manejar concurrencia)" />
+    <MESSAGE value="---| avance en un performance CRUD escalable a futuro a bd sin ser muy complejo &#10;registrado: almacena la fecha de registro&#10;codigo_cita: es generado por el back&#10;prioridad: es asignada segun lo seleccionado en el navbar de 8 opciones categoricas para la cita, ej : Emergencia = 1, (1 es el valor de prioridad.)&#10;&#10;-- v1 (falta manejar concurrencia)" />
+    <MESSAGE value="---| leyenda de logica en el manejo de las citas para guiarme&#10;&#10;-- v1 (falta manejar concurrencia)" />
+    <MESSAGE value="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)" />
+    <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)" />
+    <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
+    <MESSAGE value="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1" />
+    <MESSAGE value="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes" />
+    <option name="LAST_COMMIT_MESSAGE" value="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/main.py</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763774650508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$.coverage" NAME=" Coverage Results" MODIFIED="1763754916591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/unit_tests" />
   </component>
 </project>
