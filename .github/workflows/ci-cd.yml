@@ -83,21 +83,32 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Desplegar en EC2
+        # Detener y eliminar el contenedor anterior
+
+        # Eliminar la imagen anterior
+
+        # Eliminar la imagen anterior
+
+        # Descargar la nueva imagen
+
+        # Ejecutar el nuevo contenedor
+
+        # Limpiar imágenes antiguas
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "
-            # Detener y eliminar el contenedor anterior
+            
             sudo docker stop devops_saludvital || true
             sudo docker rm devops_saludvital || true
             
-            # Eliminar la imagen anterior
+            
             sudo docker rmi sebastianalzateandica/devops_saludvital:latest || true
             
-            # Descargar la nueva imagen
+            
             sudo docker pull sebastianalzateandica/devops_saludvital:latest
             
-            # Ejecutar el nuevo contenedor
+            
             sudo docker run -d --name devops_saludvital -p 10000:10000 sebastianalzateandica/devops_saludvital:latest
             
-            # Limpiar imágenes antiguas
+            
             sudo docker image prune -f
           "
