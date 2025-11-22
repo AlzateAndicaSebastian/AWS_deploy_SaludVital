@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---- | Modificacion al ci-cd ya que al parecer no esta actualizando el contenedor en la EC2 -- v2" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -345,7 +342,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763775110276</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="---- | Modificacion al ci-cd ya que al parecer no esta actualizando el contenedor en la EC2 -- v2">
+      <option name="closed" value="true" />
+      <created>1763783897277</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1763783897278</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -398,7 +403,8 @@
     <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
     <MESSAGE value="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1" />
     <MESSAGE value="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes" />
-    <option name="LAST_COMMIT_MESSAGE" value="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes" />
+    <MESSAGE value="---- | Modificacion al ci-cd ya que al parecer no esta actualizando el contenedor en la EC2 -- v2" />
+    <option name="LAST_COMMIT_MESSAGE" value="---- | Modificacion al ci-cd ya que al parecer no esta actualizando el contenedor en la EC2 -- v2" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763774650508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
