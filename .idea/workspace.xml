@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes">
-      <change afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci-cd.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,18 +39,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "AlzateAndicaSebastian"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;AlzateAndicaSebastian&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/AlzateAndicaSebastian/AWS_deploy_SaludVital.git",
-    "accountId": "5150c9ac-b844-4a6a-88d9-ca1d35dc2830"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/AlzateAndicaSebastian/AWS_deploy_SaludVital.git&quot;,
+    &quot;accountId&quot;: &quot;5150c9ac-b844-4a6a-88d9-ca1d35dc2830&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -68,7 +68,7 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "serviciosLoginPacientes",
+    "git-widget-placeholder": "#1 on pruebasAutomatizadas",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests",
     "node.js.detected.package.eslint": "true",
@@ -356,7 +356,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="pruebasAutomatizadas" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
