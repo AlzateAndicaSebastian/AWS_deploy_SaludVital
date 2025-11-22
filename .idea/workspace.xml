@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1">
+      <change afterPath="$PROJECT_DIR$/app/managers/paciente_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/paciente_router.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/paciente_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/citas.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/citas.json.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/unit_tests/test_paciente_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/citas_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/citas_router.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,6 +40,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="pruebasAutomatizadas" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
@@ -56,9 +72,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python tests.Python tests for test_paciente_manager.TestPacienteManager.executor": "Run",
+    "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "pruebasAutomatizadas",
+    "git-widget-placeholder": "serviciosLoginPacientes",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests",
     "node.js.detected.package.eslint": "true",
@@ -82,6 +100,53 @@
       <recent name="$PROJECT_DIR$/app/managers" />
     </key>
   </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ws_DevopsPMV_SaludVital2025" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for test_paciente_manager.TestPacienteManager" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="ws_DevopsPMV_SaludVital2025" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/unit_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_paciente_manager.TestPacienteManager&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python tests.Python tests for test_paciente_manager.TestPacienteManager" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -102,7 +167,7 @@
       <workItem from="1760224377550" duration="1337000" />
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
-      <workItem from="1763569835998" duration="29639000" />
+      <workItem from="1763569835998" duration="40958000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -272,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763751437367</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1">
+      <option name="closed" value="true" />
+      <created>1763751870553</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1763751870553</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,6 +384,11 @@
     <MESSAGE value="---| leyenda CAMBIO de logica en el manejo de las citas para guiarme&#10;&#10;-- v2 (concurrencia implementada falta probar)" />
     <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios&#10;&#10;&#10;-- v4 (concurrencia implementada...)" />
     <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
-    <option name="LAST_COMMIT_MESSAGE" value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
+    <MESSAGE value="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1" />
+    <option name="LAST_COMMIT_MESSAGE" value="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763764563484" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$.coverage" NAME=" Coverage Results" MODIFIED="1763754916591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/unit_tests" />
   </component>
 </project>

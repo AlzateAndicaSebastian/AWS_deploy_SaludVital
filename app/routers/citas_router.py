@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel
 import os
 from app.services.citas_service import CitasService
 from app.config import decodificar_token_acceso, verificar_documento_paciente
@@ -11,6 +12,22 @@ citas_service = CitasService()
 
 # Seguridad con token Bearer
 security = HTTPBearer()
+
+# Modelo para la creación de citas
+class CrearCitaRequest(BaseModel):
+    paciente: str
+    medico: str
+    fecha: str
+    documento: str
+    tipoCita: str
+    motivoPaciente: str
+
+# Modelo para la eliminación de citas
+class EliminarCitaRequest(BaseModel):
+    paciente: str
+    medico: str
+    fecha: str
+    documento: str
 
 def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     """
@@ -39,12 +56,7 @@ def verificar_paciente_registrado(documento: str):
 
 @router.post("/")
 async def crear_cita(
-    paciente: str,
-    medico: str,
-    fecha: str,
-    documento: str,
-    tipoCita: str,
-    motivoPaciente: str,
+    datos_cita: CrearCitaRequest,
     payload: dict = Depends(verificar_token)
 ):
     """
@@ -54,17 +66,24 @@ async def crear_cita(
     Verifica que el paciente esté registrado antes de crear la cita.
     """
     # Verificar que el documento del token coincida con el documento proporcionado
-    if payload.get("documento") != documento:
+    if payload.get("documento") != datos_cita.documento:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes permiso para crear citas para este paciente",
         )
     
     # Verificar que el paciente esté registrado
-    verificar_paciente_registrado(documento)
+    verificar_paciente_registrado(datos_cita.documento)
     
     try:
-        cita = citas_service.crear_cita_service(paciente, medico, fecha, documento, tipoCita, motivoPaciente)
+        cita = citas_service.crear_cita_service(
+            datos_cita.paciente,
+            datos_cita.medico,
+            datos_cita.fecha,
+            datos_cita.documento,
+            datos_cita.tipoCita,
+            datos_cita.motivoPaciente
+        )
         return {"mensaje": "Cita creada exitosamente", "cita": cita}
     except ValueError as e:
         raise HTTPException(
@@ -79,10 +98,7 @@ async def crear_cita(
 
 @router.delete("/")
 async def eliminar_cita(
-    paciente: str,
-    medico: str,
-    fecha: str,
-    documento: str,
+    datos_eliminacion: EliminarCitaRequest,
     payload: dict = Depends(verificar_token)
 ):
     """
@@ -92,17 +108,22 @@ async def eliminar_cita(
     Verifica que el paciente esté registrado antes de eliminar la cita.
     """
     # Verificar que el documento del token coincida con el documento proporcionado
-    if payload.get("documento") != documento:
+    if payload.get("documento") != datos_eliminacion.documento:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes permiso para eliminar citas de este paciente",
         )
     
     # Verificar que el paciente esté registrado
-    verificar_paciente_registrado(documento)
+    verificar_paciente_registrado(datos_eliminacion.documento)
     
     try:
-        resultado = citas_service.eliminar_cita_service(paciente, medico, fecha, documento)
+        resultado = citas_service.eliminar_cita_service(
+            datos_eliminacion.paciente,
+            datos_eliminacion.medico,
+            datos_eliminacion.fecha,
+            datos_eliminacion.documento
+        )
         if resultado:
             return {"mensaje": "Cita eliminada exitosamente"}
         else:

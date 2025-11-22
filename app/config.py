@@ -35,5 +35,19 @@ def verificar_documento_paciente(documento: str):
     Esta es una implementación básica que verifica si existe
     un archivo JSON para el paciente.
     """
-    paciente_file_path = BASE_DATA_DIR / "citas" / f"{documento}.json"
+    paciente_file_path = BASE_DATA_DIR / "pacientes" / f"{documento}.json"
     return paciente_file_path.exists()
+
+def obtener_directorio_pacientes():
+    """
+    Obtiene el directorio donde se almacenan los datos de los pacientes.
+    """
+    pacientes_dir = BASE_DATA_DIR / "pacientes"
+    pacientes_dir.mkdir(parents=True, exist_ok=True)
+    return pacientes_dir
+
+def obtener_archivo_paciente(documento: str):
+    """
+    Obtiene la ruta del archivo JSON de un paciente específico.
+    """
+    return obtener_directorio_pacientes() / f"{documento}.json"

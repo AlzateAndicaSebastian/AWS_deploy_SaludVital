@@ -6,6 +6,7 @@ from app.managers.historial_cita import HistorialCita
 from app.managers.resultados import Resultados
 from app.managers.alertas import Alertas
 from app.routers.citas_router import router as citas_router
+from app.routers.paciente_router import router as paciente_router
 
 app = FastAPI(title="VitalApp API")
 
@@ -21,6 +22,7 @@ app.add_middleware(
 
 # Registrar los routers
 app.include_router(citas_router)
+app.include_router(paciente_router)
 
 # Crear instancias
 cm = CitaManager()
@@ -31,14 +33,6 @@ al = Alertas()
 @app.get("/")
 def read_root():
     return {"status": "active", "message": "VitalApp API is running"}
-
-@app.post("/citas")
-def crear_cita(paciente: str, medico: str, fecha: str):
-    try:
-        cm.agendar_cita(paciente, medico, fecha)
-        return {"message": "Cita creada exitosamente"}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
 
 @app.get("/diagnosticos/{paciente}/{fecha}")
 def obtener_diagnostico(paciente: str, fecha: str):
