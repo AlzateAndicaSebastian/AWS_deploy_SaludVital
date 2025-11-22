@@ -61,48 +61,13 @@ jobs:
       - name: Subir imagen a Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops_saludvital:latest
 
-  # Trabajo de despliegue local
-  deploy:
-    needs: docker  # Este trabajo se ejecuta solo si el trabajo 'docker' es exitoso
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      # Paso 1: Obtener el código
-      - name: Checkout código
-        uses: actions/checkout@v3
-
-      # Paso 1.5: Instalar Docker Compose
-      - name: Instalar Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      # Paso 2: Desplegar la aplicación usando docker-compose
-      - name: Desplegar aplicación
-        run: |
-          echo "Desplegando aplicación con docker-compose"
-          docker-compose up -d
-
-  # Trabajo de despliegue en AWS
+  # Trabajo de despliegue en AWS EC2
   deploy-aws:
     needs: docker
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
-
-      # Paso 1.5: Instalar Docker Compose
-      - name: Instalar Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
 
       - name: Configurar las credenciales de AWS
         uses: aws-actions/configure-aws-credentials@v1
@@ -114,40 +79,25 @@ jobs:
       - name: Configurar clave privada SSH
         run: |
           mkdir -p ~/.ssh
-          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
-            echo "Error: La clave privada SSH no está configurada en los secretos de GitHub." >&2
-            exit 1
-          fi
-          printf "%s" "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ls -l ~/.ssh/id_rsa  # Verifica que el archivo se creó correctamente
 
-      - name: Verificar formato de la clave privada
+      - name: Desplegar en EC2
         run: |
-          head -5 ~/.ssh/id_rsa
-          file ~/.ssh/id_rsa
-
-      - name: Configurar SSH para git clone
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      - name: Verificar clave SSH con GitHub
-        run: ssh -i ~/.ssh/id_ed25519 -T git@github.com || true
-
-      - name: Clonar repositorio por SSH
-        run: |
-          if [ ! -d 'AWS_deploy_SaludVital' ]; then
-            git clone git@github.com:AlzateAndicaSebastian/AWS_deploy_SaludVital.git AWS_deploy_SaludVital
-            sleep 3
-          fi
-          cd AWS_deploy_SaludVital
-          git pull origin main
-          sleep 2
-          docker-compose down
-          sleep 2
-          docker-compose pull
-          sleep 2
-          docker-compose up -d
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "
+            # Detener y eliminar el contenedor anterior
+            sudo docker stop devops_saludvital || true
+            sudo docker rm devops_saludvital || true
+            
+            # Eliminar la imagen anterior
+            sudo docker rmi sebastianalzateandica/devops_saludvital:latest || true
+            
+            # Descargar la nueva imagen
+            sudo docker pull sebastianalzateandica/devops_saludvital:latest
+            
+            # Ejecutar el nuevo contenedor
+            sudo docker run -d --name devops_saludvital -p 10000:10000 sebastianalzateandica/devops_saludvital:latest
+            
+            # Limpiar imágenes antiguas
+            sudo docker image prune -f
+          "
