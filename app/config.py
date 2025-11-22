@@ -11,6 +11,9 @@ SECRET_KEY = os.getenv("SECRET_KEY", "clave_secreta_por_defecto")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+ADMIN_SECRET_KEY = os.getenv("ADMIN_SECRET_KEY", "clave_admin_secreta_por_defecto")
+
+
 def crear_token_acceso(data: dict):
     """
     Crea un token de acceso JWT con los datos proporcionados.

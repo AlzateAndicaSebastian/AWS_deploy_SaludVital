@@ -1,10 +1,12 @@
 from app.managers.paciente_manager import PacienteManager
 from app.config import crear_token_acceso
+from app.managers.admin_manager import AdminManager
 
 
 class PacienteService:
     def __init__(self):
         self.paciente_manager = PacienteManager()
+        self.admin_manager = AdminManager()
 
     def registrar_paciente(self, documento: str, nombre_completo: str, contraseña: str,
                           telefono: str, email: str, edad: int, sexo: str) -> bool:
@@ -46,3 +48,15 @@ class PacienteService:
         Verifica si un paciente está registrado en el sistema.
         """
         return self.paciente_manager.existe_paciente(documento)
+
+    def obtener_examenes_paciente(self, documento: str) -> list:
+        """
+        Obtiene todos los exámenes de un paciente.
+        """
+        return self.admin_manager.listar_examenes_paciente(documento)
+
+    def obtener_resultado_examen(self, codigo_examen: str) -> dict:
+        """
+        Obtiene el resultado de un examen específico.
+        """
+        return self.admin_manager.obtener_resultado_examen(codigo_examen)

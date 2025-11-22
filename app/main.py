@@ -7,6 +7,8 @@ from app.managers.resultados import Resultados
 from app.managers.alertas import Alertas
 from app.routers.citas_router import router as citas_router
 from app.routers.paciente_router import router as paciente_router
+from app.routers.medico_router import router as medico_router
+from app.routers.admin_router import router as admin_router
 
 app = FastAPI(title="VitalApp API")
 
@@ -23,6 +25,8 @@ app.add_middleware(
 # Registrar los routers
 app.include_router(citas_router)
 app.include_router(paciente_router)
+app.include_router(medico_router)
+app.include_router(admin_router)
 
 # Crear instancias
 cm = CitaManager()
@@ -34,22 +38,22 @@ al = Alertas()
 def read_root():
     return {"status": "active", "message": "VitalApp API is running"}
 
-@app.get("/diagnosticos/{paciente}/{fecha}")
-def obtener_diagnostico(paciente: str, fecha: str):
-    try:
-        diagnostico = hc.obtener_diagnostico(paciente, fecha)
-        return {"diagnostico": diagnostico}
-    except Exception as e:
-        raise HTTPException(status_code=404, detail="Diagnóstico no encontrado")
-
-@app.get("/alertas/{paciente}")
-def obtener_alertas(paciente: str):
-    try:
-        res = rs.obtener_resultados(paciente)
-        alertas = al.generar_alertas(res)
-        return {"alertas": alertas}
-    except Exception as e:
-        raise HTTPException(status_code=404, detail="No se encontraron alertas")
+# @app.get("/diagnosticos/{paciente}/{fecha}")
+# def obtener_diagnostico(paciente: str, fecha: str):
+#     try:
+#         diagnostico = hc.obtener_diagnostico(paciente, fecha)
+#         return {"diagnostico": diagnostico}
+#     except Exception as e:
+#         raise HTTPException(status_code=404, detail="Diagnóstico no encontrado")
+#
+# @app.get("/alertas/{paciente}")
+# def obtener_alertas(paciente: str):
+#     try:
+#         res = rs.obtener_resultados(paciente)
+#         alertas = al.generar_alertas(res)
+#         return {"alertas": alertas}
+#     except Exception as e:
+#         raise HTTPException(status_code=404, detail="No se encontraron alertas")
 
 if __name__ == "__main__":
     import uvicorn

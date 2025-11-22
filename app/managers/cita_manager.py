@@ -4,6 +4,7 @@ import secrets
 import string
 from datetime import datetime
 from filelock import FileLock
+from app.managers.medico_manager import MedicoManager
 
 
 class CitaManager:
@@ -19,6 +20,7 @@ class CitaManager:
 
         self.base_path = base_path
         os.makedirs(self.base_path, exist_ok=True)
+        self.medico_manager = MedicoManager()
 
     # ===============================================================
     #  📌 UTILIDADES DE ARCHIVOS POR PACIENTE
@@ -58,6 +60,35 @@ class CitaManager:
             with open(file_path, "w") as f:
                 json.dump(citas, f, indent=4)
 
+    def verificar_medico(self, medico):
+        """
+        Verifica la existencia del médico por nombre o documento.
+        Si existe, retorna un diccionario con el nombre y documento del médico.
+        Si no existe, lanza una excepción ValueError.
+        """
+        # Primero intentamos buscar por documento (si medico es un documento)
+        if isinstance(medico, str):
+            datos_medico = self.medico_manager.obtener_datos_medico(medico)
+            if datos_medico:
+                return {
+                    "nombre": datos_medico["nombre_completo"],
+                    "documento": datos_medico["documento"]
+                }
+            
+            # Si no se encontró por documento, buscamos por nombre
+            # Recorremos todos los archivos de médicos
+            for archivo in os.listdir(self.medico_manager.medicos_dir):
+                if archivo.endswith(".json"):
+                    documento = archivo[:-5]  # Quitamos .json
+                    datos_medico = self.medico_manager.obtener_datos_medico(documento)
+                    if datos_medico and datos_medico.get("nombre_completo") == medico:
+                        return {
+                            "nombre": datos_medico["nombre_completo"],
+                            "documento": datos_medico["documento"]
+                        }
+        
+        raise ValueError(f"Médico '{medico}' no encontrado en el sistema")
+
     # ===============================================================
     #  📌  OPERACIONES PRINCIPALES
     # ===============================================================
@@ -66,6 +97,11 @@ class CitaManager:
         """
         Guarda la cita en el archivo individual del paciente.
         """
+        # Verificar que el médico exista
+        datos_medico = self.verificar_medico(medico)
+        
+        # Usar el nombre y documento verificados del médico
+        medico_info = f"{datos_medico['nombre']} ({datos_medico['documento']})"
 
         citas_paciente = self._load_data_paciente(documento)
 
@@ -73,12 +109,12 @@ class CitaManager:
         fecha_valida = self._verificar_fecha(fecha)
 
         # (Opcional) Validación si quieres evitar duplicados exactos:
-        # if self._cita_existente(citas_paciente, medico, fecha_valida):
+        # if self._cita_existente(citas_paciente, medico_info, fecha_valida):
         #     raise ValueError("Cita duplicada.")
 
         nueva_cita = {
             "paciente": paciente,
-            "medico": medico,
+            "medico": medico_info,
             "fecha": fecha_valida,
             "documento": documento,
             "registrado": datetime.now().isoformat(),
