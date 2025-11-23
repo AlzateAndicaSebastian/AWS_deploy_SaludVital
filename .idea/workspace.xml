@@ -4,21 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---- | Generacion de servicios de historial y de diagnosticos y de examenes">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_21_25,_11_04 PM_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/managers/admin_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/managers/medico_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routers/admin_router.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routers/medico_router.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/admin_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/medico_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataSensible.env" afterDir="false" />
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---- | Generacion de servicios de historial y de diagnosticos y de examenes, logica implementada de administrador y medicos.&#10;&#10;-- corregir error en la logica del metodo de agendamiento de las citas a los medicos y a los pacientes&#10;&#10;-- implementar todas las llamadas postman como satisfactorias para comenzar con la implementacion de prometheus y grafana&#10;&#10;-- una vez implementadas y en el servicio diseñar un frontend sencillo para gestionar el sistema">
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/managers/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/cita_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/paciente_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/paciente_router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/paciente_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/paciente_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,27 +65,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python tests.Python tests for test_paciente_manager.TestPacienteManager.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;serviciosdeMedicosenPacientes&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.27586207&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.Python tests for test_paciente_manager.TestPacienteManager.executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "serviciosdeMedicosenPacientes",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.27586207",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -172,7 +164,9 @@
       <workItem from="1760301870416" duration="26138000" />
       <workItem from="1763568592599" duration="1211000" />
       <workItem from="1763569835998" duration="42553000" />
-      <workItem from="1763833740085" duration="5541000" />
+      <workItem from="1763833740085" duration="6393000" />
+      <workItem from="1763853741439" duration="1478000" />
+      <workItem from="1763867605494" duration="5842000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -358,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763775110276</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="---- | Generacion de servicios de historial y de diagnosticos y de examenes, logica implementada de administrador y medicos.&#10;&#10;-- corregir error en la logica del metodo de agendamiento de las citas a los medicos y a los pacientes&#10;&#10;-- implementar todas las llamadas postman como satisfactorias para comenzar con la implementacion de prometheus y grafana&#10;&#10;-- una vez implementadas y en el servicio diseñar un frontend sencillo para gestionar el sistema">
+      <option name="closed" value="true" />
+      <created>1763853324997</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1763853324997</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -399,10 +401,19 @@
     <MESSAGE value="---| CAMBIO de arquitectura de Monolitica a Capas minimas de servicios- adaptable a (JWT) &#10;&#10;--| CITAS y pruebas unitarias a cita manager-&gt;pasadas&#10;&#10;-- adaptacion a jsons por usuario individual en directorio general de /citas&#10;&#10;-- v6 (comprobacion JWT incorporada para los endpoints de citas )" />
     <MESSAGE value="&gt;&gt;&gt;&gt; solucionando dependencias en requirements.txt --| v1" />
     <MESSAGE value="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes" />
-    <option name="LAST_COMMIT_MESSAGE" value="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes" />
+    <MESSAGE value="---- | Generacion de servicios de historial y de diagnosticos y de examenes, logica implementada de administrador y medicos.&#10;&#10;-- corregir error en la logica del metodo de agendamiento de las citas a los medicos y a los pacientes&#10;&#10;-- implementar todas las llamadas postman como satisfactorias para comenzar con la implementacion de prometheus y grafana&#10;&#10;-- una vez implementadas y en el servicio diseñar un frontend sencillo para gestionar el sistema" />
+    <option name="LAST_COMMIT_MESSAGE" value="---- | Generacion de servicios de historial y de diagnosticos y de examenes, logica implementada de administrador y medicos.&#10;&#10;-- corregir error en la logica del metodo de agendamiento de las citas a los medicos y a los pacientes&#10;&#10;-- implementar todas las llamadas postman como satisfactorias para comenzar con la implementacion de prometheus y grafana&#10;&#10;-- una vez implementadas y en el servicio diseñar un frontend sencillo para gestionar el sistema" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763851704275" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763930442192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$.coverage" NAME=" Coverage Results" MODIFIED="1763754916591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/unit_tests" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

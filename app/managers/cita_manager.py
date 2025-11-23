@@ -100,8 +100,8 @@ class CitaManager:
         # Verificar que el médico exista
         datos_medico = self.verificar_medico(medico)
         
-        # Usar el nombre y documento verificados del médico
-        medico_info = f"{datos_medico['nombre']} ({datos_medico['documento']})"
+        # Usar el nombre y documento verificados del médico comolista
+        medico_info = [datos_medico['documento'], datos_medico['nombre']]
 
         citas_paciente = self._load_data_paciente(documento)
 
@@ -152,10 +152,25 @@ class CitaManager:
         citas = self._load_data_paciente(documento)
         inicial = len(citas)
 
+        # Convertir medico a formato de lista para comparación si es una cadena
+        if isinstance(medico, str):
+            # Intentar extraer documento y nombre del formato anterior
+            if '(' in medico and ')' in medico:
+                # Formato: "Nombre (Documento)"
+                parts = medico.split('(')
+                nombre = parts[0].strip()
+                documento_medico= parts[1].rstrip(')')
+                medico_lista = [documento_medico, nombre]
+            else:
+                # Si no hay formato especial, usar valores predeterminados
+                medico_lista = ['', medico]
+        else:
+            medico_lista = medico
+
         citas = [
             c for c in citas
             if not (c["paciente"] == paciente and
-                    c["medico"] == medico and
+                    c["medico"] == medico_lista and
                     c["fecha"] == fecha and
                     c["documento"] == documento)
         ]
@@ -190,7 +205,7 @@ class CitaManager:
 
     def _verificar_fecha(self, fecha):
         try:
-            fecha_cita = datetime.fromisoformat(fecha)
+           fecha_cita = datetime.fromisoformat(fecha)
         except ValueError:
             raise ValueError("Formato de fecha inválido. Use ISO 8601.")
 
