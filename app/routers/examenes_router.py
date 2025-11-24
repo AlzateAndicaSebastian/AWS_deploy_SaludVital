@@ -66,3 +66,24 @@ async def listar_resultados_paciente(documento_paciente: str, payload: dict = De
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Acceso restringido")
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+@router.get("/solicitudes/paciente/{documento_paciente}")
+async def listar_solicitudes_paciente(documento_paciente: str, codigo_cita: str | None = None, estado: str | None = None, payload: dict = Depends(get_payload)):
+    """Lista las solicitudes de examen de un paciente.
+    Filtros opcionales:
+    - codigo_cita: restringe a una cita específica
+    - estado: filtra por estado del flujo (solicitado, autorizado, procesando, resultado)
+    Permisos:
+    - Paciente: solo sus propias solicitudes
+    - Médico/Admin: cualquier paciente
+    """
+    try:
+        tipo = payload.get("tipo_usuario")
+        if tipo in [Role.medico.value, Role.admin.value] or payload.get("documento") == documento_paciente:
+            solicitudes = workflow.listar_solicitudes_paciente(documento_paciente, codigo_cita=codigo_cita, estado=estado)
+            return {"solicitudes": solicitudes}
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Acceso restringido")
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

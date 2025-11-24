@@ -1,0 +1,220 @@
+{
+  "id": null,
+  "uid": "vitalapp-full",
+  "title": "VitalApp - Observabilidad y Negocio",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "30s",
+  "timezone": "browser",
+  "tags": ["vitalapp", "prometheus"],
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {"type": "grafana", "id": "grafana", "name": "Grafana", "version": "11.x"},
+    {"type": "panel", "id": "stat", "name": "Stat", "version": "1.0"},
+    {"type": "panel", "id": "timeseries", "name": "Time series", "version": "1.0"},
+    {"type": "panel", "id": "table", "name": "Table", "version": "1.0"},
+    {"type": "datasource", "id": "prometheus", "name": "Prometheus", "version": "2.x"}
+  ],
+  "annotations": {"list": []},
+  "time": {"from": "now-12h", "to": "now"},
+  "templating": {
+    "list": [
+      {
+        "name": "route",
+        "type": "query",
+        "datasource": "${DS_PROMETHEUS}",
+        "query": "label_values(vitalapp_http_requests_total, route)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "sort": 1
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Throughput HTTP (req/s últimos 5m)",
+      "description": "Número promedio de solicitudes por segundo en la ventana reciente (5 minutos). Indica carga actual.",
+      "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "sum(rate(vitalapp_http_requests_total[5m]))", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "stat",
+      "title": "Porcentaje de Errores 5xx",
+      "description": "Porcentaje de respuestas con error de servidor (5xx) sobre el total de solicitudes en 5 minutos. Un valor alto indica problemas internos.",
+      "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "(sum(rate(vitalapp_http_requests_total{status=~\"5..\"}[5m])) / sum(rate(vitalapp_http_requests_total[5m]))) * 100", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "fieldConfig": {"defaults": {"unit": "percent"}},
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "stat",
+      "title": "Latencia p95 (últimos 5m)",
+      "description": "Tiempo bajo el cual el 95% de las solicitudes fueron atendidas. Útil para experiencia típica del usuario.",
+      "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "histogram_quantile(0.95, sum(rate(vitalapp_http_request_duration_seconds_bucket[5m])) by (le))", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "fieldConfig": {"defaults": {"unit": "s"}},
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "timeseries",
+      "title": "Distribución de Latencias (Buckets)",
+      "description": "Cantidad de solicitudes que caen dentro de cada intervalo de latencia. Ayuda a ver si aumentan las muy lentas.",
+      "gridPos": {"x": 16, "y": 0, "w": 8, "h": 8},
+      "fieldConfig": {"defaults": {"unit": "req/s"}},
+      "targets": [
+        {"expr": "sum(rate(vitalapp_http_request_duration_seconds_bucket[5m])) by (le)", "legendFormat": "<= {{le}}s", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Solicitudes por Ruta (Top 8)",
+      "description": "Rutas con mayor actividad. Usa el filtro de ruta para limitar resultados.",
+      "gridPos": {"x": 0, "y": 4, "w": 12, "h": 8},
+      "targets": [
+        {"expr": "topk(8, sum(rate(vitalapp_http_requests_total{route=~\"$route\"}[5m])) by (route))", "legendFormat": "{{route}}", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Errores Cliente vs Servidor",
+      "description": "Comparación de errores 4xx (entrada inválida/permiso) vs 5xx (fallo interno).",
+      "gridPos": {"x": 12, "y": 4, "w": 12, "h": 8},
+      "targets": [
+        {"expr": "sum(rate(vitalapp_http_requests_total{status=~\"4..\"}[5m]))", "legendFormat": "4xx", "refId": "A", "datasource": "${DS_PROMETHEUS}"},
+        {"expr": "sum(rate(vitalapp_http_requests_total{status=~\"5..\"}[5m]))", "legendFormat": "5xx", "refId": "B", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Logins por Tipo de Usuario",
+      "description": "Actividad de autenticación de pacientes y médicos. Subidas bruscas pueden indicar campañas o problemas (reintentos).",
+      "gridPos": {"x": 0, "y": 12, "w": 12, "h": 8},
+      "targets": [
+        {"expr": "rate(vitalapp_pacientes_login_total[5m])", "legendFormat": "Pacientes", "refId": "A", "datasource": "${DS_PROMETHEUS}"},
+        {"expr": "rate(vitalapp_medicos_login_total[5m])", "legendFormat": "Médicos", "refId": "B", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Usuarios Registrados (Acumulado)",
+      "description": "Evolución del número total de pacientes y médicos registrados.",
+      "gridPos": {"x": 12, "y": 12, "w": 12, "h": 8},
+      "targets": [
+        {"expr": "vitalapp_pacientes_registrados_total", "legendFormat": "Pacientes", "refId": "A", "datasource": "${DS_PROMETHEUS}"},
+        {"expr": "vitalapp_medicos_registrados_total", "legendFormat": "Médicos", "refId": "B", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Engagement Pacientes (%)",
+      "description": "Logins recientes de pacientes respecto al total registrado. Usa clamp_min para evitar división por cero.",
+      "gridPos": {"x": 0, "y": 20, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "(rate(vitalapp_pacientes_login_total[5m]) / clamp_min(vitalapp_pacientes_registrados_total,1)) * 100", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "fieldConfig": {"defaults": {"unit": "percent"}},
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "stat",
+      "title": "Engagement Médicos (%)",
+      "description": "Logins recientes de médicos respecto al total registrado.",
+      "gridPos": {"x": 4, "y": 20, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "(rate(vitalapp_medicos_login_total[5m]) / clamp_min(vitalapp_medicos_registrados_total,1)) * 100", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "fieldConfig": {"defaults": {"unit": "percent"}},
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "timeseries",
+      "title": "Clases de Código HTTP",
+      "description": "Tasa de respuestas exitosas (2xx), errores de cliente (4xx) y errores de servidor (5xx).",
+      "gridPos": {"x": 8, "y": 20, "w": 8, "h": 8},
+      "targets": [
+        {"expr": "sum(rate(vitalapp_http_requests_total{status=~\"2..\"}[5m]))", "legendFormat": "2xx", "refId": "A", "datasource": "${DS_PROMETHEUS}"},
+        {"expr": "sum(rate(vitalapp_http_requests_total{status=~\"4..\"}[5m]))", "legendFormat": "4xx", "refId": "B", "datasource": "${DS_PROMETHEUS}"},
+        {"expr": "sum(rate(vitalapp_http_requests_total{status=~\"5..\"}[5m]))", "legendFormat": "5xx", "refId": "C", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Citas vs Solicitudes de Exámenes (Incremento Hora)",
+      "description": "Cantidad de nuevas citas y solicitudes de exámenes creadas cada hora.",
+      "gridPos": {"x": 16, "y": 20, "w": 8, "h": 8},
+      "targets": [
+        {"expr": "increase(vitalapp_citas_agendadas_total[1h])", "legendFormat": "Citas (1h)", "refId": "A", "datasource": "${DS_PROMETHEUS}"},
+        {"expr": "increase(vitalapp_examenes_solicitudes_total[1h])", "legendFormat": "Exámenes (1h)", "refId": "B", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Rutas con Mayor Latencia Media",
+      "description": "Top 10 de rutas ordenadas por latencia promedio (suma de duración / contador).",
+      "gridPos": {"x": 0, "y": 24, "w": 12, "h": 8},
+      "targets": [
+        {"expr": "topk(10, (sum(rate(vitalapp_http_request_duration_seconds_sum[5m])) by (route) / sum(rate(vitalapp_http_request_duration_seconds_count[5m])) by (route)))", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Latencia Media Estimada (5m)",
+      "description": "Promedio aproximado de duración de las solicitudes en la última ventana (sum/count). Complementa p95 para ver tendencia general.",
+      "gridPos": {"x": 16, "y": 8, "w": 8, "h": 4},
+      "targets": [
+        {"expr": "(sum(rate(vitalapp_http_request_duration_seconds_sum[5m])) / sum(rate(vitalapp_http_request_duration_seconds_count[5m])))", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "fieldConfig": {"defaults": {"unit": "s"}},
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "stat",
+      "title": "Total Citas Agendadas",
+      "description": "Valor acumulado de citas registradas desde el inicio. Debe crecer de forma estable.",
+      "gridPos": {"x": 0, "y": 28, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "vitalapp_citas_agendadas_total", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "stat",
+      "title": "Total Solicitudes de Exámenes",
+      "description": "Total acumulado de solicitudes de exámenes creadas. Permite ver tendencia de actividad clínica.",
+      "gridPos": {"x": 4, "y": 28, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "vitalapp_examenes_solicitudes_total", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    },
+    {
+      "type": "stat",
+      "title": "Ratio Exámenes por Cita (%)",
+      "description": "Proporción aproximada de solicitudes de exámenes respecto a citas (exámenes_total / citas_total * 100). Valor alto indica alta demanda de estudios.",
+      "gridPos": {"x": 8, "y": 28, "w": 4, "h": 4},
+      "targets": [
+        {"expr": "(vitalapp_examenes_solicitudes_total / clamp_min(vitalapp_citas_agendadas_total,1)) * 100", "refId": "A", "datasource": "${DS_PROMETHEUS}"}
+      ],
+      "fieldConfig": {"defaults": {"unit": "percent"}},
+      "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "center", "reduceOptions": {"calcs": ["last"], "fields": "", "values": false}}
+    }
+  ]
+}

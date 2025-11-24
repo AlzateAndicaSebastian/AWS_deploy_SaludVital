@@ -61,9 +61,60 @@ jobs:
       - name: Subir imagen a Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops_saludvital:latest
 
+  # Trabajo de backup en AWS EC2
+  backup-aws:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar las credenciales de AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Configurar clave privada SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Backup volúmenes (Grafana y Prometheus) en EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "
+            set -euo pipefail
+            cd ~/AWS_deploy_SaludVital || { mkdir -p ~/AWS_deploy_SaludVital; cd ~/AWS_deploy_SaludVital; }
+            mkdir -p backups
+            DATE=\$(date +%Y%m%d%H%M%S)
+            echo '[BACKUP] Iniciando backup de volúmenes grafana_data y prometheus_data (si existen)'
+            # Backup grafana_data
+            if docker volume inspect grafana_data >/dev/null 2>&1; then
+              echo '[BACKUP] Volumen grafana_data encontrado, comprimiendo...'
+              docker run --rm -v grafana_data:/data -v \$(pwd)/backups:/backup alpine sh -c "tar czf /backup/grafana_data_\${DATE}.tar.gz -C /data ."
+            else
+              echo '[BACKUP] Volumen grafana_data no existe, se omite.'
+            fi
+            # Backup prometheus_data
+            if docker volume inspect prometheus_data >/dev/null 2>&1; then
+              echo '[BACKUP] Volumen prometheus_data encontrado, comprimiendo...'
+              docker run --rm -v prometheus_data:/data -v \$(pwd)/backups:/backup alpine sh -c "tar czf /backup/prometheus_data_\${DATE}.tar.gz -C /data ."
+            else
+              echo '[BACKUP] Volumen prometheus_data no existe, se omite.'
+            fi
+            echo '[BACKUP] Aplicando política de retención (mantener últimos 5 backups por volumen)'
+            for prefix in grafana_data prometheus_data; do
+              ls -1t backups/\${prefix}_*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm || true
+            done
+            echo '[BACKUP] Listado de backups actuales:'
+            ls -lh backups | sed 's/^/    /'
+          "
+
   # Trabajo de despliegue en AWS EC2
   deploy-aws:
-    needs: docker
+    needs: backup-aws
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
@@ -124,19 +175,4 @@ jobs:
 
             if [ "$PROM_CODE" != "200" ]; then
               echo '[WARN] Prometheus no respondió 200, mostrando logs:'
-              docker logs --tail=60 prometheus 2>/dev/null || echo 'Prometheus sin logs'
-            fi
-
-            echo '--- Chequeo Grafana login ---'
-            GRAF_CODE=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/login || true)
-            echo "Grafana /login HTTP_CODE=$GRAF_CODE"
-
-            if [ "$APP_CODE" != "200" ]; then
-              echo '[ERROR] La aplicación no devolvió 200 en /metrics'; exit 1; fi
-            if [ "$PROM_CODE" != "200" ]; then
-              echo '[ERROR] Prometheus no listo'; exit 1; fi
-            if [ "$GRAF_CODE" != "200" ]; then
-              echo '[ERROR] Grafana no listo'; exit 1; fi
-
-            echo '[DEPLOY] OK todos los servicios listos.'
-          "
+              docker logs --tail=60 prometheus 2

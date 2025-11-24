@@ -52,3 +52,17 @@ Authorization: Bearer {{admin_token}}
 ### Acceso denegado a endpoint de paciente
 GET {{baseUrl}}/pacientes/examenes
 Authorization: Bearer {{admin_token}}
+
+### Listar solicitudes de examen de un paciente (todas)
+GET {{baseUrl}}/examenes/solicitudes/paciente/{{paciente_doc}}
+Authorization: Bearer {{admin_token}}
+
+### Listar solicitudes filtradas por código de cita
+@codigo_cita = CITA123
+GET {{baseUrl}}/examenes/solicitudes/paciente/{{paciente_doc}}?codigo_cita={{codigo_cita}}
+Authorization: Bearer {{admin_token}}
+
+### Listar solicitudes en estado 'solicitado' para autorizar
+GET {{baseUrl}}/examenes/solicitudes/paciente/{{paciente_doc}}?estado=solicitado
+Authorization: Bearer {{admin_token}}
+# Copiar uno de los "id" retornados y usarlo como @solicitud_id para autorizar.

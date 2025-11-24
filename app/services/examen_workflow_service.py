@@ -85,3 +85,14 @@ class ExamenWorkflowService:
 
     def listar_resultados_paciente(self, documento_paciente: str) -> list:
         return self.resultado_repo.listar_por_paciente(documento_paciente)
+
+    def listar_solicitudes_paciente(self, documento_paciente: str, codigo_cita: str | None = None, estado: str | None = None) -> list:
+        """Lista solicitudes de examen de un paciente.
+        Opcionalmente filtra por código de cita y/o estado (solicitado, autorizado, procesando, resultado).
+        """
+        solicitudes = self.solicitud_repo.listar_por_paciente(documento_paciente)
+        if codigo_cita:
+            solicitudes = [s for s in solicitudes if s.get("codigo_cita") == codigo_cita]
+        if estado:
+            solicitudes = [s for s in solicitudes if s.get("estado") == estado]
+        return solicitudes
