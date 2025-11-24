@@ -164,26 +164,42 @@ jobs:
           echo '--- Contenedores ---'
           docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
 
-          echo '--- Chequeo /metrics (App) ---'
-          APP_CODE=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:10000/metrics || true)
-          echo "App /metrics HTTP_CODE=$APP_CODE"
+          wait_http() {
+            local url="$1" expected="${2:-200}" retries="${3:-30}" delay="${4:-5}" desc="$5"
+            echo "[WAIT] Comprobando $desc en $url (esperado $expected)".
+            for i in $(seq 1 "$retries"); do
+              code=$(curl -s -o /dev/null -w '%{http_code}' "$url" || true)
+              echo "[WAIT] Intento $i/$retries -> código $code"
+              if [ "$code" = "$expected" ]; then
+                echo "[WAIT] OK $desc listo (código $code)"
+                return 0
+              fi
+              sleep "$delay"
+            done
+            echo "[WAIT] FALLO: $desc no alcanzó código $expected tras $retries intentos"
+            return 1
+          }
 
-          echo '--- Chequeo Prometheus ready ---'
-          PROM_CODE=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:9090/-/ready || true)
-          echo "Prometheus /-/ready HTTP_CODE=$PROM_CODE"
-
-          if [ "$PROM_CODE" != "200" ]; then
-            echo '[WARN] Prometheus no respondió 200, mostrando logs:'
-            docker logs --tail=60 prometheus 2>/dev/null || echo 'Prometheus sin logs'
+          echo '--- Esperando /metrics (App) ---'
+          if ! wait_http 'http://localhost:10000/metrics' 200 40 3 'API /metrics'; then
+            echo '[DIAG] Logs de contenedor devops_saludvital:'
+            docker logs --tail=80 devops_saludvital || true
+            exit 1
           fi
 
-          echo '--- Chequeo Grafana login ---'
-          GRAF_CODE=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/login || true)
-          echo "Grafana /login HTTP_CODE=$GRAF_CODE"
+          echo '--- Esperando Prometheus readiness ---'
+          if ! wait_http 'http://localhost:9090/-/ready' 200 30 2 'Prometheus readiness'; then
+            echo '[DIAG] Logs prometheus:'
+            docker logs --tail=80 prometheus || true
+            exit 1
+          fi
 
-          if [ "$APP_CODE" != "200" ]; then echo '[ERROR] App /metrics no 200'; exit 1; fi
-          if [ "$PROM_CODE" != "200" ]; then echo '[ERROR] Prometheus no listo'; exit 1; fi
-          if [ "$GRAF_CODE" != "200" ]; then echo '[ERROR] Grafana no lista'; exit 1; fi
+          echo '--- Esperando Grafana /login ---'
+          if ! wait_http 'http://localhost:3000/login' 200 40 3 'Grafana login'; then
+            echo '[DIAG] Logs grafana:'
+            docker logs --tail=80 grafana || true
+            exit 1
+          fi
 
           echo '[DEPLOY] OK todos los servicios listos.'
           EOSSH
