@@ -88,28 +88,55 @@ jobs:
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa prometheus.yml ubuntu@${{ secrets.EC2_HOST }}:~/AWS_deploy_SaludVital/prometheus.yml || echo "prometheus.yml no existe en el repo"
 
       - name: Desplegar en EC2 con docker-compose
-        # Actualizar imagen principal
-
-        # Remover contenedores antiguos si existen
-
-        # Levantar stack completo (vitalapp + prometheus + grafana)
-
-        # Verificación básica
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "
-            cd ~/AWS_deploy_SaludVital || mkdir -p ~/AWS_deploy_SaludVital && cd ~/AWS_deploy_SaludVital
-            
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devops_saludvital:latest || docker pull sebastianalzateandica/devops_saludvital:latest
-            
-            docker-compose stop vitalapp prometheus grafana 2>/dev/null || true
-            docker-compose rm -f vitalapp prometheus grafana 2>/dev/null || true
-           
-            docker-compose up -d
-            
+            set -euo pipefail
+            cd ~/AWS_deploy_SaludVital || { mkdir -p ~/AWS_deploy_SaludVital; cd ~/AWS_deploy_SaludVital; }
+
+            echo '[DEPLOY] Pull imagen aplicación'
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devops_saludvital:latest || docker pull sebastianalzateandica/devops_saludvital:latest || true
+
+            echo '[DEPLOY] Eliminar contenedor manual previo si existe'
+            docker rm -f devops_saludvital 2>/dev/null || true
+
+            echo '[DEPLOY] docker-compose down (incluye orphans)'
+            docker-compose down --remove-orphans 2>/dev/null || true
+
+            echo '[DEPLOY] Levantar stack completo'
+            if ! docker-compose up -d; then
+              echo '[ERROR] Falló docker-compose up -d. Logs de compose:'
+              docker-compose ps || true
+              echo '[INFO] Contenedores actuales:'
+              docker ps -a || true
+              exit 1
+            fi
+
             echo '--- Contenedores ---'
-            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
-            echo '--- Chequeo /metrics ---'
-            curl -s -o /dev/null -w '%{http_code}\n' http://localhost:10000/metrics || true
+            docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+
+            echo '--- Chequeo /metrics (App) ---'
+            APP_CODE=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:10000/metrics || true)
+            echo "App /metrics HTTP_CODE=$APP_CODE"
+
             echo '--- Chequeo Prometheus ready ---'
-            curl -s -o /dev/null -w '%{http_code}\n' http://localhost:9090/-/ready || true
+            PROM_CODE=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:9090/-/ready || true)
+            echo "Prometheus /-/ready HTTP_CODE=$PROM_CODE"
+
+            if [ "$PROM_CODE" != "200" ]; then
+              echo '[WARN] Prometheus no respondió 200, mostrando logs:'
+              docker logs --tail=60 prometheus 2>/dev/null || echo 'Prometheus sin logs'
+            fi
+
+            echo '--- Chequeo Grafana login ---'
+            GRAF_CODE=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/login || true)
+            echo "Grafana /login HTTP_CODE=$GRAF_CODE"
+
+            if [ "$APP_CODE" != "200" ]; then
+              echo '[ERROR] La aplicación no devolvió 200 en /metrics'; exit 1; fi
+            if [ "$PROM_CODE" != "200" ]; then
+              echo '[ERROR] Prometheus no listo'; exit 1; fi
+            if [ "$GRAF_CODE" != "200" ]; then
+              echo '[ERROR] Grafana no listo'; exit 1; fi
+
+            echo '[DEPLOY] OK todos los servicios listos.'
           "
