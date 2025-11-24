@@ -4,21 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Pruebas http base de los casos de uso del sistema funcionales&#10;&#10;-- Integracion con variables de entorno dataSensible.env &#10;-- Manejo unificado de las solicitudes de examenes y los resultados de los mismos con collections de JSON &#10;&#10;-- simulacion de base de datos usando repositorios base para manejar las colecciones de json de los modelos creados para cada entidad&#10;&#10;-- se enviaron las .env mecanicamente al directorio de la app en la EC2&#10;&#10;-- Se crean manuales y diagramas de flujo para expplicar las interacciones con el sistema&#10;&#10;--- | Falta incorporar metricas de prometheus | ----">
-      <change afterPath="$PROJECT_DIR$/app/metrics/metrics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/metrics_manual.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/metrics_rationale.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prometheus.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_metrics.py" afterDir="false" />
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="----&gt; || Correccion a workflows v2&#10;&#10;-- Inclusion de la persistencia de la app en el backup tras redeploy">
       <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/managers/paciente_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/paciente_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/citas_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/citas_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/examen_workflow_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/examen_workflow_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/medico_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/medico_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/paciente_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/paciente_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,48 +70,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "HTTP Request.admin | Autorizar solicitud examen-> REEMPLAZAR_SOLICITUD_ID.executor": "Run",
-    "HTTP Request.admin | Copiar token de respuesta y reemplazar @admin_token..executor": "Run",
-    "HTTP Request.admin | Listar resultados paciente.executor": "Run",
-    "HTTP Request.admin | Login administrador.executor": "Run",
-    "HTTP Request.admin | Registrar resultado examen autorizado -> REEMPLAZAR_SOLICITUD_ID ,pero debe estar autorizada, se supone que es el resultado del examen que pidio el medico para el paciente.executor": "Run",
-    "HTTP Request.admin | Verificar resultados tras registro.executor": "Run",
-    "HTTP Request.medico | Cerrar cita realizada con diagnóstico y exámenes solicitados.executor": "Run",
-    "HTTP Request.medico | Login médico.executor": "Run",
-    "HTTP Request.medico | Obtener agenda del médico (después de que paciente cree cita).executor": "Run",
-    "HTTP Request.medico | Obtener diagnóstico de la cita.executor": "Run",
-    "HTTP Request.medico | Registro médico.executor": "Run",
-    "HTTP Request.paciente | Consulta examen específico (legacy si existe).executor": "Run",
-    "HTTP Request.paciente | Crear cita (paciente agenda con médico registrado por nombre).executor": "Run",
-    "HTTP Request.paciente | Crear cita.executor": "Run",
-    "HTTP Request.paciente | Listar citas del paciente.executor": "Run",
-    "HTTP Request.paciente | Listar exámenes del paciente (puede estar vacío).executor": "Run",
-    "HTTP Request.paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token).executor": "Run",
-    "HTTP Request.paciente | Login paciente (obtener token).executor": "Run",
-    "HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin.executor": "Run",
-    "HTTP Request.paciente | Registro paciente.executor": "Run",
-    "Python tests.Python tests for test_paciente_manager.TestPacienteManager.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "serviciosdeMedicosenPacientes",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.27586207",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;HTTP Request.admin | Autorizar solicitud examen-&gt; REEMPLAZAR_SOLICITUD_ID.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.admin | Copiar token de respuesta y reemplazar @admin_token..executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.admin | Listar resultados paciente.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.admin | Login administrador.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.admin | Registrar resultado examen autorizado -&gt; REEMPLAZAR_SOLICITUD_ID ,pero debe estar autorizada, se supone que es el resultado del examen que pidio el medico para el paciente.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.admin | Verificar resultados tras registro.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.medico | Cerrar cita realizada con diagnóstico y exámenes solicitados.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.medico | Login médico.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.medico | Obtener agenda del médico (después de que paciente cree cita).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.medico | Obtener diagnóstico de la cita.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.medico | Registro médico.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Consulta examen específico (legacy si existe).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Crear cita (paciente agenda con médico registrado por nombre).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Crear cita.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Listar citas del paciente.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Listar exámenes del paciente (puede estar vacío).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Login paciente (obtener token).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.paciente | Registro paciente.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_paciente_manager.TestPacienteManager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/sebas_jsdv/IdeaProjects/AWS_DeployPrometheuesGrafana/tests/unit_tests&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.27586207&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -132,7 +121,7 @@
       <recent name="$PROJECT_DIR$/app/managers" />
     </key>
   </component>
-  <component name="RunManager" selected="HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin">
+  <component name="RunManager" selected="Python.main">
     <configuration name="paciente | Consulta examen específico (legacy si existe)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Consulta examen específico (legacy si existe)" index="9" runType="Run single request">
       <method v="2" />
     </configuration>
@@ -142,26 +131,46 @@
     <configuration name="paciente | Listar exámenes del paciente (puede estar vacío)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Listar exámenes del paciente (puede estar vacío)" index="7" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Login paciente (copiar token de respuesta y sustituir @paciente_token)" index="2" runType="Run single request">
+    <configuration name="paciente | Reconsulta exámenes tras acciones de médico y admin" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Reconsulta exámenes tras acciones de médico y admin" index="8" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="paciente | Reconsulta exámenes tras acciones de médico y admin" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Reconsulta exámenes tras acciones de médico y admin" index="8" runType="Run single request">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ws_DevopsPMV_SaludVital2025" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="HTTP Request.paciente | Consulta examen específico (legacy si existe)" />
       <item itemvalue="HTTP Request.paciente | Listar citas del paciente" />
       <item itemvalue="HTTP Request.paciente | Listar exámenes del paciente (puede estar vacío)" />
-      <item itemvalue="HTTP Request.paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token)" />
       <item itemvalue="HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin" />
+      <item itemvalue="Python.main" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin" />
         <item itemvalue="HTTP Request.paciente | Consulta examen específico (legacy si existe)" />
         <item itemvalue="HTTP Request.paciente | Listar exámenes del paciente (puede estar vacío)" />
         <item itemvalue="HTTP Request.paciente | Listar citas del paciente" />
-        <item itemvalue="HTTP Request.paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token)" />
       </list>
     </recent_temporary>
   </component>
@@ -189,6 +198,7 @@
       <workItem from="1763833740085" duration="6393000" />
       <workItem from="1763853741439" duration="1478000" />
       <workItem from="1763867605494" duration="35943000" />
+      <workItem from="1764000379315" duration="855000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -406,7 +416,55 @@
       <option name="project" value="LOCAL" />
       <updated>1763960208363</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="----&gt; || Incorporacion de metricas basicas Prometheus en el middleware de la app.&#10;&#10;-- configuracion del workflow para levantar grafana y prometheus -- v1">
+      <option name="closed" value="true" />
+      <created>1763966006376</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1763966006376</updated>
+    </task>
+    <task id="LOCAL-00029" summary="----&gt; || Incorporacion de metricas basicas Prometheus en el middleware de la app.&#10;&#10;-- configuracion del workflow para levantar grafana y prometheus -- v2">
+      <option name="closed" value="true" />
+      <created>1763966559343</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1763966559344</updated>
+    </task>
+    <task id="LOCAL-00030" summary="----&gt; || Correccion a endpoints de admin , backups de seguridad en el workflow antes de desplegar, modelo de dashboards de grafana construido para importar, integracion de memoria a prueba de recreacion de contenedores en prometheus y grafana.&#10;&#10;-- funcionan las metricas&#10;-- funcionan el flujo de endpoints en postman&#10;-- funciona visualizacion de metricas en grafana&#10;&#10;-- || falta probar este deploy en la ec2. y un front compatible con el flujo postman">
+      <option name="closed" value="true" />
+      <created>1763977635550</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1763977635550</updated>
+    </task>
+    <task id="LOCAL-00031" summary="----&gt; || Correccion a workflows v1">
+      <option name="closed" value="true" />
+      <created>1763978077936</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1763978077936</updated>
+    </task>
+    <task id="LOCAL-00032" summary="----&gt; || Correccion a workflows v2">
+      <option name="closed" value="true" />
+      <created>1763978392945</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1763978392945</updated>
+    </task>
+    <task id="LOCAL-00033" summary="----&gt; || Correccion a workflows v2&#10;&#10;-- Inclusion de la persistencia de la app en el backup tras redeploy">
+      <option name="closed" value="true" />
+      <created>1763979541122</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1763979541122</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -424,12 +482,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="-----| ensayo deploy #2 -- se agregan permisos en el pipeline de lectura y escritura" />
-    <MESSAGE value="-----| ensayo deploy #3 -- se cambia la logica de interpretacion de la clave secreta para conectarse mediante ssh , de archivo a secreto en github actions" />
-    <MESSAGE value="-----| ensayo deploy #4 -- se configura la verificacion de dockercompose en github commands" />
-    <MESSAGE value="-----| ensayo deploy #5 -- se configura la clave privada en un archivo ssh" />
-    <MESSAGE value="-----| ensayo deploy #6 -- se añade url de entorno del repositorio  ssh para ser agregado y clonado en la instancia de aws" />
-    <MESSAGE value="-----| ensayo deploy #7 --|" />
     <MESSAGE value="-----| ensayo deploy #7 --|&#10;variables de entorno del repositorio y de la llave ssh de github agregados para que la instancia tenga permisos de depliegue desde github" />
     <MESSAGE value="-----| ensayo deploy #8 --|&#10;se quita la copia de la ssh en la instancia, ateniendose solo al runner de github" />
     <MESSAGE value="-----| ensayo deploy #9 --|&#10;Verificar el formato del archivo generado en el runner antes de intentar la conexión SSH." />
@@ -449,10 +501,16 @@
     <MESSAGE value="---- | programa funcional hasta antes de cambio de arquitectura para resolver problema de responsabilidades en :&#10;&#10;-- manejo de las citas agendadas&#10;-- responsabilidades de los medicos&#10;-- manejo de responsabilidades admin&#10;-- manejo de responsabilidades de alertas&#10;-- logica de guardado json para futura migracion a SQLite o Postgress" />
     <MESSAGE value="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Manejo de clases en el modelo para los datos y de repositorios (por ahora solo para examenes) pero no usada por el momento&#10;&#10;-- los examenes son creados directamente por el medico y el admin se encarga de actualizar los resultados&#10;&#10;-- Test autogenerados 21 passed succesfuly&#10;&#10;-- Aun no probado (en Postman)" />
     <MESSAGE value="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Pruebas http base de los casos de uso del sistema funcionales&#10;&#10;-- Integracion con variables de entorno dataSensible.env &#10;-- Manejo unificado de las solicitudes de examenes y los resultados de los mismos con collections de JSON &#10;&#10;-- simulacion de base de datos usando repositorios base para manejar las colecciones de json de los modelos creados para cada entidad&#10;&#10;-- se enviaron las .env mecanicamente al directorio de la app en la EC2&#10;&#10;-- Se crean manuales y diagramas de flujo para expplicar las interacciones con el sistema&#10;&#10;--- | Falta incorporar metricas de prometheus | ----" />
-    <option name="LAST_COMMIT_MESSAGE" value="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Pruebas http base de los casos de uso del sistema funcionales&#10;&#10;-- Integracion con variables de entorno dataSensible.env &#10;-- Manejo unificado de las solicitudes de examenes y los resultados de los mismos con collections de JSON &#10;&#10;-- simulacion de base de datos usando repositorios base para manejar las colecciones de json de los modelos creados para cada entidad&#10;&#10;-- se enviaron las .env mecanicamente al directorio de la app en la EC2&#10;&#10;-- Se crean manuales y diagramas de flujo para expplicar las interacciones con el sistema&#10;&#10;--- | Falta incorporar metricas de prometheus | ----" />
+    <MESSAGE value="----&gt; || Incorporacion de metricas basicas Prometheus en el middleware de la app.&#10;&#10;-- configuracion del workflow para levantar grafana y prometheus -- v1" />
+    <MESSAGE value="----&gt; || Incorporacion de metricas basicas Prometheus en el middleware de la app.&#10;&#10;-- configuracion del workflow para levantar grafana y prometheus -- v2" />
+    <MESSAGE value="----&gt; || Correccion a endpoints de admin , backups de seguridad en el workflow antes de desplegar, modelo de dashboards de grafana construido para importar, integracion de memoria a prueba de recreacion de contenedores en prometheus y grafana.&#10;&#10;-- funcionan las metricas&#10;-- funcionan el flujo de endpoints en postman&#10;-- funciona visualizacion de metricas en grafana&#10;&#10;-- || falta probar este deploy en la ec2. y un front compatible con el flujo postman" />
+    <MESSAGE value="----&gt; || Correccion a workflows v1" />
+    <MESSAGE value="----&gt; || Correccion a workflows v2" />
+    <MESSAGE value="----&gt; || Correccion a workflows v2&#10;&#10;-- Inclusion de la persistencia de la app en el backup tras redeploy" />
+    <option name="LAST_COMMIT_MESSAGE" value="----&gt; || Correccion a workflows v2&#10;&#10;-- Inclusion de la persistencia de la app en el backup tras redeploy" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763956540687" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763981625058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$.coverage" NAME=" Coverage Results" MODIFIED="1763754916591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/unit_tests" />
   </component>
   <component name="github-copilot-workspace">

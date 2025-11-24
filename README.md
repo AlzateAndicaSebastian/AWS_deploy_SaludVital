@@ -132,3 +132,4 @@ También se incluye documentación detallada sobre:
 - [Despliegue en AWS](documentation/despliegue_aws.md)
 - [Variables de entorno](documentation/variables_entorno.md)
 - [Consumo de la API](documentation/consumo_api.md)
+pruebas 
