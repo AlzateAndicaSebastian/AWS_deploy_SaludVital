@@ -5,9 +5,17 @@ from datetime import datetime
 from pathlib import Path
 from filelock import FileLock
 from app.config import BASE_DATA_DIR
+from app.utils.file_atomic import locked_atomic_write, locked_atomic_load
 
 
 class MedicoManager:
+    # Leyenda: Fachada legacy para operaciones de médicos.
+    # Responsabilidades actuales:
+    # - Registro / autenticación de médicos (persistencia en archivos individuales)
+    # - Gestión de agenda (archivo por médico con lista de citas)
+    # - Almacenamiento de diagnóstico por código de cita (1 archivo por diagnóstico)
+    # Relación con servicios: MedicoService delega aquí mientras se migra a repositorios.
+    # Futuro: separar en repositorios y services (MedicoRepository, AgendaService, DiagnosticoService).
     def __init__(self, base_dir=None):
         """
         Gestiona el registro y autenticación de médicos.
@@ -40,9 +48,7 @@ class MedicoManager:
         datos_a_guardar = datos_medico.copy()
         datos_a_guardar["contraseña"] = self._hash_contraseña(datos_medico["contraseña"])
         datos_a_guardar["fecha_registro"] = datetime.now().isoformat()
-        
-        with open(archivo, "w") as f:
-            json.dump(datos_a_guardar, f, indent=4)
+        locked_atomic_write(str(archivo), datos_a_guardar)
 
     def _cargar_medico(self, documento: str) -> dict:
         """
@@ -51,9 +57,7 @@ class MedicoManager:
         archivo = self.medicos_dir / f"{documento}.json"
         if not os.path.exists(archivo):
             return None
-
-        with open(archivo, "r") as f:
-            return json.load(f)
+        return locked_atomic_load(str(archivo))
 
     def registrar_medico(self, documento: str, nombre_completo: str, contraseña: str,
                          telefono: str, email: str, especialidad: str) -> bool:
@@ -133,20 +137,17 @@ class MedicoManager:
         lock_path = str(archivo) + ".lock"
         
         with FileLock(lock_path):
-            with open(archivo, "w") as f:
+            tmp_path = str(archivo) + ".tmp"
+            with open(tmp_path, "w") as f:
                 json.dump(citas, f, indent=4)
+            os.replace(tmp_path, archivo)
 
     def agregar_diagnostico(self, codigo_cita: str, diagnostico_data: dict):
-        """
-        Agrega un diagnóstico para una cita específica.
-        """
+        # Leyenda: Persistencia simple de diagnóstico por cita.
+        # Se planea migrar a DiagnosticoRepository que agrupará todos en un sólo archivo.
         archivo = self.diagnosticos_dir / f"{codigo_cita}.json"
-        
-        # Agregar marca de tiempo
         diagnostico_data["fecha_registro"] = datetime.now().isoformat()
-        
-        with open(archivo, "w") as f:
-            json.dump(diagnostico_data, f, indent=4)
+        locked_atomic_write(str(archivo), diagnostico_data)
 
     def obtener_diagnostico(self, codigo_cita: str) -> dict:
         """
@@ -156,9 +157,7 @@ class MedicoManager:
         
         if not os.path.exists(archivo):
             return None
-            
-        with open(archivo, "r") as f:
-            return json.load(f)
+        return locked_atomic_load(str(archivo))
 
     def marcar_cita_atendida(self, documento_medico: str, codigo_cita: str):
         """
@@ -174,5 +173,4 @@ class MedicoManager:
                 
                 # Guardar cambios
                 archivo = self.medicos_dir / f"{documento_medico}.json"
-                with open(archivo, "w") as f:
-                    json.dump(medico, f, indent=4)
+                locked_atomic_write(str(archivo), medico)

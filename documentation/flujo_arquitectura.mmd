@@ -1,0 +1,63 @@
+flowchart LR
+    subgraph Entrada[Entrada HTTP]
+        A[Cliente Front/Web/App] --> B[FastAPI main.py]
+    end
+    B --> R1[Router Pacientes]
+    B --> R2[Router Citas]
+    B --> R3[Router Médicos]
+    B --> R4[Router Admin]
+    B --> R5[Router Exámenes]
+
+    subgraph Routers
+        R1 --> S1[PacienteService]
+        R2 --> S2[CitasService]
+        R3 --> S3[MedicoService]
+        R4 --> S4[AdminService]
+        R5 --> S5[ExamenWorkflowService]
+    end
+
+    subgraph Servicios[Servicios / Lógica Negocio]
+        S2 --> M2[CitaManager]
+        S3 --> M3[MedicoManager]
+        S4 --> M4[AdminManager]
+        S1 --> M1[PacienteManager]
+        S5 --> RepoExSol[ExamenSolicitudRepository]
+        S5 --> RepoExRes[ExamenResultadoRepository]
+        S3 --> M3
+        S2 --> M3
+    end
+
+    subgraph Managers[Fachada Legacy]
+        M1 --> FilesPacientes[(JSON Pacientes)]
+        M2 --> FilesCitas[(JSON Citas por Paciente)]
+        M3 --> FilesMedicos[(JSON Médicos)]
+        M3 --> FilesAgendas[(JSON Agendas)]
+        M3 --> FilesDiagnosticos[(JSON Diagnósticos)]
+        M4 --> FilesExamenesLegacy[(JSON Exámenes Legacy)]
+    end
+
+    subgraph Repositorios[Nueva Capa Persistencia]
+        RepoExSol --> FileExSol[(examenes_solicitudes.json)]
+        RepoExRes --> FileExRes[(examenes_resultados.json)]
+    end
+
+    subgraph Futuro[Futuro SQL]
+        FileExSol -. migración .-> SQL[(Postgres/MariaDB)]
+        FileExRes -. migración .-> SQL
+        FilesCitas -. posible .-> SQL
+        FilesDiagnosticos -. posible .-> SQL
+        FilesExamenesLegacy -. deprecado .-> SQL
+    end
+
+    classDef router fill:#e0f7fa,stroke:#006064,color:#000
+    classDef service fill:#e8f5e9,stroke:#2e7d32,color:#000
+    classDef manager fill:#fff3e0,stroke:#ef6c00,color:#000
+    classDef repo fill:#ede7f6,stroke:#5e35b1,color:#000
+    classDef file fill:#f5f5f5,stroke:#757575,color:#000
+
+    class R1,R2,R3,R4,R5 router
+    class S1,S2,S3,S4,S5 service
+    class M1,M2,M3,M4 manager
+    class RepoExSol,RepoExRes repo
+    class FilesPacientes,FilesCitas,FilesMedicos,FilesAgendas,FilesDiagnosticos,FilesExamenesLegacy,FileExSol,FileExRes file
+

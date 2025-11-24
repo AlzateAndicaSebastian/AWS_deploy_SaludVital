@@ -9,6 +9,7 @@ from app.routers.citas_router import router as citas_router
 from app.routers.paciente_router import router as paciente_router
 from app.routers.medico_router import router as medico_router
 from app.routers.admin_router import router as admin_router
+from app.routers.examenes_router import router as examenes_router
 
 app = FastAPI(title="VitalApp API")
 
@@ -27,6 +28,7 @@ app.include_router(citas_router)
 app.include_router(paciente_router)
 app.include_router(medico_router)
 app.include_router(admin_router)
+app.include_router(examenes_router)
 
 # Crear instancias
 cm = CitaManager()
@@ -37,6 +39,13 @@ al = Alertas()
 @app.get("/")
 def read_root():
     return {"status": "active", "message": "VitalApp API is running"}
+
+# Leyenda arquitectura:
+# main.py -> registra routers (capa de entrada HTTP)
+# routers -> validación ligera + dependencias de seguridad JWT
+# services -> lógica de negocio (workflow, reglas)
+# managers -> fachada legacy/persistencia directa JSON (en transición a repositorios)
+# repositories -> abstracción de almacenamiento (JSON ahora, adaptable a SQL)
 
 # @app.get("/diagnosticos/{paciente}/{fecha}")
 # def obtener_diagnostico(paciente: str, fecha: str):

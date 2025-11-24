@@ -140,7 +140,7 @@ async def eliminar_cita(
 @router.get("/{documento}")
 async def obtener_citas_paciente(
     documento: str,
-    payload: dict = Depends(verificar_token)
+    payload: dict = Depends(verificar_token) # valida que solo los pacientes autenticados puedan acceder a sus citas
 ):
     """
     Obtiene todas las citas de un paciente.
