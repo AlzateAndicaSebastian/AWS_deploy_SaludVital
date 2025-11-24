@@ -82,33 +82,34 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Desplegar en EC2
-        # Detener y eliminar el contenedor anterior
+      - name: Transferir archivos docker-compose y prometheus.yml
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa docker-compose.yml ubuntu@${{ secrets.EC2_HOST }}:~/AWS_deploy_SaludVital/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa prometheus.yml ubuntu@${{ secrets.EC2_HOST }}:~/AWS_deploy_SaludVital/prometheus.yml || echo "prometheus.yml no existe en el repo"
 
-        # Eliminar la imagen anterior
+      - name: Desplegar en EC2 con docker-compose
+        # Actualizar imagen principal
 
-        # Eliminar la imagen anterior
+        # Remover contenedores antiguos si existen
 
-        # Descargar la nueva imagen
+        # Levantar stack completo (vitalapp + prometheus + grafana)
 
-        # Ejecutar el nuevo contenedor
-
-        # Limpiar imágenes antiguas
+        # Verificación básica
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "
+            cd ~/AWS_deploy_SaludVital || mkdir -p ~/AWS_deploy_SaludVital && cd ~/AWS_deploy_SaludVital
             
-            sudo docker stop devops_saludvital || true
-            sudo docker rm devops_saludvital || true
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devops_saludvital:latest || docker pull sebastianalzateandica/devops_saludvital:latest
             
+            docker-compose stop vitalapp prometheus grafana 2>/dev/null || true
+            docker-compose rm -f vitalapp prometheus grafana 2>/dev/null || true
+           
+            docker-compose up -d
             
-            sudo docker rmi sebastianalzateandica/devops_saludvital:latest || true
-            
-            
-            sudo docker pull sebastianalzateandica/devops_saludvital:latest
-            
-            
-            sudo docker run -d --name devops_saludvital -p 10000:10000 sebastianalzateandica/devops_saludvital:latest
-            
-            
-            sudo docker image prune -f
+            echo '--- Contenedores ---'
+            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+            echo '--- Chequeo /metrics ---'
+            curl -s -o /dev/null -w '%{http_code}\n' http://localhost:10000/metrics || true
+            echo '--- Chequeo Prometheus ready ---'
+            curl -s -o /dev/null -w '%{http_code}\n' http://localhost:9090/-/ready || true
           "
