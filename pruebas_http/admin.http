@@ -1,0 +1,54 @@
+# Archivo de pruebas HTTP - Rol Administrador (Único usuario)
+@baseUrl = http://localhost:10000
+@admin_user = admin
+@admin_pass = s3cr3tAdm1nK3y
+@admin_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwidGlwb191c3VhcmlvIjoiYWRtaW4iLCJleHAiOjE3NjM5NTcxNjl9.Ca_stXVT4-TQjWXiJdqJVc_E7quqTo57e__JRGkGnBs
+
+### Login administrador
+POST {{baseUrl}}/admin/login
+Content-Type: application/json
+
+{
+  "username": "{{admin_user}}",
+  "password": "{{admin_pass}}"
+}
+###Copiar token de respuesta y reemplazar @admin_token.
+
+### Dashboard admin
+GET {{baseUrl}}/admin/dashboard
+Authorization: Bearer {{admin_token}}
+
+### Listar resultados paciente
+@paciente_doc = P001
+GET {{baseUrl}}/examenes/paciente/{{paciente_doc}}
+Authorization: Bearer {{admin_token}}
+
+### Autorizar solicitud examen-> REEMPLAZAR_SOLICITUD_ID
+@solicitud_id = 1b1822b9-3d4e-42a7-aae5-2bc4792e77b3
+POST {{baseUrl}}/examenes/solicitudes/autorizar
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "solicitud_id": "{{solicitud_id}}"
+}
+
+### Registrar resultado examen autorizado -> REEMPLAZAR_SOLICITUD_ID ,pero debe estar autorizada, se supone que es el resultado del examen que pidio el medico para el paciente
+@solicitud_autorizada_id = 1b1822b9-3d4e-42a7-aae5-2bc4792e77b3
+POST {{baseUrl}}/examenes/resultados
+Authorization: Bearer {{admin_token}}
+Content-Type: application/json
+
+{
+  "solicitud_id": "{{solicitud_autorizada_id}}",
+  "valores": {"glucosa": 150, "eritrocitos": 4.5},
+  "interpretacion": "Glucosa elevada leve; controlar dieta"
+}
+
+### Verificar resultados tras registro
+GET {{baseUrl}}/examenes/paciente/{{paciente_doc}}
+Authorization: Bearer {{admin_token}}
+
+### Acceso denegado a endpoint de paciente
+GET {{baseUrl}}/pacientes/examenes
+Authorization: Bearer {{admin_token}}

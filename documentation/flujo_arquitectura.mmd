@@ -8,6 +8,16 @@ flowchart LR
     B --> R4[Router Admin]
     B --> R5[Router Exámenes]
 
+    subgraph Seguridad[Seguridad]
+        Sec[roles.py JWT + Roles]
+    end
+
+    Sec --> R1
+    Sec --> R2
+    Sec --> R3
+    Sec --> R4
+    Sec --> R5
+
     subgraph Routers
         R1 --> S1[PacienteService]
         R2 --> S2[CitasService]
@@ -23,8 +33,7 @@ flowchart LR
         S1 --> M1[PacienteManager]
         S5 --> RepoExSol[ExamenSolicitudRepository]
         S5 --> RepoExRes[ExamenResultadoRepository]
-        S3 --> M3
-        S2 --> M3
+        S3 --> S5
     end
 
     subgraph Managers[Fachada Legacy]
@@ -54,10 +63,11 @@ flowchart LR
     classDef manager fill:#fff3e0,stroke:#ef6c00,color:#000
     classDef repo fill:#ede7f6,stroke:#5e35b1,color:#000
     classDef file fill:#f5f5f5,stroke:#757575,color:#000
+    classDef security fill:#fce4ec,stroke:#ad1457,color:#000
 
     class R1,R2,R3,R4,R5 router
     class S1,S2,S3,S4,S5 service
     class M1,M2,M3,M4 manager
     class RepoExSol,RepoExRes repo
     class FilesPacientes,FilesCitas,FilesMedicos,FilesAgendas,FilesDiagnosticos,FilesExamenesLegacy,FileExSol,FileExRes file
-
+    class Sec security

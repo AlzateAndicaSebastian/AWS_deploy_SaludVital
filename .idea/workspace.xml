@@ -4,26 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---- | programa funcional hasta antes de cambio de arquitectura para resolver problema de responsabilidades en :&#10;&#10;-- manejo de las citas agendadas&#10;-- responsabilidades de los medicos&#10;-- manejo de responsabilidades admin&#10;-- manejo de responsabilidades de alertas&#10;-- logica de guardado json para futura migracion a SQLite o Postgress">
-      <change afterPath="$PROJECT_DIR$/app/models/alerta.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/base.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/cita.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/diagnostico.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/examen.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/alerta_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/base_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/cita_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/diagnostico_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/examen_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routers/examenes_router.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/examen_workflow_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/file_atomic.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/flujo_arquitectura.mmd" afterDir="false" />
+    <list default="true" id="ddadb548-6de8-4c51-ae21-9a5df5abace5" name="Changes" comment="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Manejo de clases en el modelo para los datos y de repositorios (por ahora solo para examenes) pero no usada por el momento&#10;&#10;-- los examenes son creados directamente por el medico y el admin se encarga de actualizar los resultados&#10;&#10;-- Test autogenerados 21 passed succesfuly&#10;&#10;-- Aun no probado (en Postman)">
+      <change afterPath="$PROJECT_DIR$/app/security/roles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/documentation/casos_uso_detallado.mmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/documentation/explicacion.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pruebas_http/admin.http" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pruebas_http/medico.http" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pruebas_http/paciente.http" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_paciente_examenes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/managers/admin_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/admin_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/managers/cita_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/cita_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/managers/medico_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/managers/medico_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/citas_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/citas_router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/repositories/base_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/repositories/base_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/admin_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/admin_router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/examenes_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/examenes_router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/medico_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/medico_router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/paciente_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/paciente_router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/admin_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/admin_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/medico_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/medico_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/paciente_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/paciente_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataSensible.env" beforeDir="false" afterPath="$PROJECT_DIR$/dataSensible.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/documentation/flujo_arquitectura.mmd" beforeDir="false" afterPath="$PROJECT_DIR$/documentation/flujo_arquitectura.mmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +41,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTTP Public Environment File" />
+        <option value="HTTP Private Environment File" />
       </list>
     </option>
   </component>
@@ -68,6 +77,10 @@
     &quot;accountId&quot;: &quot;5150c9ac-b844-4a6a-88d9-ca1d35dc2830&quot;
   }
 }</component>
+  <component name="HttpClientSelectedEnvironments">
+    <file url="file://$PROJECT_DIR$/pruebas_http/paciente.http" />
+    <file url="file://$PROJECT_DIR$/pruebas_http/admin.http" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -81,6 +94,26 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "HTTP Request.admin | Autorizar solicitud examen-> REEMPLAZAR_SOLICITUD_ID.executor": "Run",
+    "HTTP Request.admin | Copiar token de respuesta y reemplazar @admin_token..executor": "Run",
+    "HTTP Request.admin | Listar resultados paciente.executor": "Run",
+    "HTTP Request.admin | Login administrador.executor": "Run",
+    "HTTP Request.admin | Registrar resultado examen autorizado -> REEMPLAZAR_SOLICITUD_ID ,pero debe estar autorizada, se supone que es el resultado del examen que pidio el medico para el paciente.executor": "Run",
+    "HTTP Request.admin | Verificar resultados tras registro.executor": "Run",
+    "HTTP Request.medico | Cerrar cita realizada con diagnóstico y exámenes solicitados.executor": "Run",
+    "HTTP Request.medico | Login médico.executor": "Run",
+    "HTTP Request.medico | Obtener agenda del médico (después de que paciente cree cita).executor": "Run",
+    "HTTP Request.medico | Obtener diagnóstico de la cita.executor": "Run",
+    "HTTP Request.medico | Registro médico.executor": "Run",
+    "HTTP Request.paciente | Consulta examen específico (legacy si existe).executor": "Run",
+    "HTTP Request.paciente | Crear cita (paciente agenda con médico registrado por nombre).executor": "Run",
+    "HTTP Request.paciente | Crear cita.executor": "Run",
+    "HTTP Request.paciente | Listar citas del paciente.executor": "Run",
+    "HTTP Request.paciente | Listar exámenes del paciente (puede estar vacío).executor": "Run",
+    "HTTP Request.paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token).executor": "Run",
+    "HTTP Request.paciente | Login paciente (obtener token).executor": "Run",
+    "HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin.executor": "Run",
+    "HTTP Request.paciente | Registro paciente.executor": "Run",
     "Python tests.Python tests for test_paciente_manager.TestPacienteManager.executor": "Run",
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -110,50 +143,36 @@
       <recent name="$PROJECT_DIR$/app/managers" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ws_DevopsPMV_SaludVital2025" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+  <component name="RunManager" selected="HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin">
+    <configuration name="paciente | Consulta examen específico (legacy si existe)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Consulta examen específico (legacy si existe)" index="9" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for test_paciente_manager.TestPacienteManager" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="ws_DevopsPMV_SaludVital2025" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests/unit_tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_paciente_manager.TestPacienteManager&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    <configuration name="paciente | Listar citas del paciente" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Listar citas del paciente" index="4" runType="Run single request">
       <method v="2" />
     </configuration>
+    <configuration name="paciente | Listar exámenes del paciente (puede estar vacío)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Listar exámenes del paciente (puede estar vacío)" index="7" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Login paciente (copiar token de respuesta y sustituir @paciente_token)" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="paciente | Reconsulta exámenes tras acciones de médico y admin" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/pruebas_http/paciente.http" executionIdentifier="Reconsulta exámenes tras acciones de médico y admin" index="8" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="HTTP Request.paciente | Consulta examen específico (legacy si existe)" />
+      <item itemvalue="HTTP Request.paciente | Listar citas del paciente" />
+      <item itemvalue="HTTP Request.paciente | Listar exámenes del paciente (puede estar vacío)" />
+      <item itemvalue="HTTP Request.paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token)" />
+      <item itemvalue="HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
-        <item itemvalue="Python tests.Python tests for test_paciente_manager.TestPacienteManager" />
+        <item itemvalue="HTTP Request.paciente | Reconsulta exámenes tras acciones de médico y admin" />
+        <item itemvalue="HTTP Request.paciente | Consulta examen específico (legacy si existe)" />
+        <item itemvalue="HTTP Request.paciente | Listar exámenes del paciente (puede estar vacío)" />
+        <item itemvalue="HTTP Request.paciente | Listar citas del paciente" />
+        <item itemvalue="HTTP Request.paciente | Login paciente (copiar token de respuesta y sustituir @paciente_token)" />
       </list>
     </recent_temporary>
   </component>
@@ -180,7 +199,7 @@
       <workItem from="1763569835998" duration="42553000" />
       <workItem from="1763833740085" duration="6393000" />
       <workItem from="1763853741439" duration="1478000" />
-      <workItem from="1763867605494" duration="15156000" />
+      <workItem from="1763867605494" duration="31657000" />
     </task>
     <task id="LOCAL-00001" summary="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws">
       <option name="closed" value="true" />
@@ -382,7 +401,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763933920033</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Manejo de clases en el modelo para los datos y de repositorios (por ahora solo para examenes) pero no usada por el momento&#10;&#10;-- los examenes son creados directamente por el medico y el admin se encarga de actualizar los resultados&#10;&#10;-- Test autogenerados 21 passed succesfuly&#10;&#10;-- Aun no probado (en Postman)">
+      <option name="closed" value="true" />
+      <created>1763944836084</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1763944836084</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -400,7 +427,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Despliegue y variables de entorno configuradas en github actions--- se añade documentacion sobre los preparativos previos para el despliegue de la api en aws" />
     <MESSAGE value="-----| ensayo deploy #1" />
     <MESSAGE value="-----| ensayo deploy #2 -- se agregan permisos en el pipeline de lectura y escritura" />
     <MESSAGE value="-----| ensayo deploy #3 -- se cambia la logica de interpretacion de la clave secreta para conectarse mediante ssh , de archivo a secreto en github actions" />
@@ -425,10 +451,11 @@
     <MESSAGE value="======= | IMPLEMENTACION DE SERVICIOS DE REGISTRO Y LOGIN DE PACIENTES&#10;&#10;--Pacientes se registran en jsons individueles en carepta de pacientes&#10;&#10;--Ejecucion de pruebas unitest para los managers de citas y pacientes &#10;&#10;--Manejo de locks para evitar corrupcion de jsons con escituras concurrentes" />
     <MESSAGE value="---- | Generacion de servicios de historial y de diagnosticos y de examenes, logica implementada de administrador y medicos.&#10;&#10;-- corregir error en la logica del metodo de agendamiento de las citas a los medicos y a los pacientes&#10;&#10;-- implementar todas las llamadas postman como satisfactorias para comenzar con la implementacion de prometheus y grafana&#10;&#10;-- una vez implementadas y en el servicio diseñar un frontend sencillo para gestionar el sistema" />
     <MESSAGE value="---- | programa funcional hasta antes de cambio de arquitectura para resolver problema de responsabilidades en :&#10;&#10;-- manejo de las citas agendadas&#10;-- responsabilidades de los medicos&#10;-- manejo de responsabilidades admin&#10;-- manejo de responsabilidades de alertas&#10;-- logica de guardado json para futura migracion a SQLite o Postgress" />
-    <option name="LAST_COMMIT_MESSAGE" value="---- | programa funcional hasta antes de cambio de arquitectura para resolver problema de responsabilidades en :&#10;&#10;-- manejo de las citas agendadas&#10;-- responsabilidades de los medicos&#10;-- manejo de responsabilidades admin&#10;-- manejo de responsabilidades de alertas&#10;-- logica de guardado json para futura migracion a SQLite o Postgress" />
+    <MESSAGE value="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Manejo de clases en el modelo para los datos y de repositorios (por ahora solo para examenes) pero no usada por el momento&#10;&#10;-- los examenes son creados directamente por el medico y el admin se encarga de actualizar los resultados&#10;&#10;-- Test autogenerados 21 passed succesfuly&#10;&#10;-- Aun no probado (en Postman)" />
+    <option name="LAST_COMMIT_MESSAGE" value="---- | NUEVA ARQUITECTUR -&gt; basada en capas similar a springboot para futura implementacion con postgress&#10;&#10;-- Manejo de clases en el modelo para los datos y de repositorios (por ahora solo para examenes) pero no usada por el momento&#10;&#10;-- los examenes son creados directamente por el medico y el admin se encarga de actualizar los resultados&#10;&#10;-- Test autogenerados 21 passed succesfuly&#10;&#10;-- Aun no probado (en Postman)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763930442192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$main.coverage" NAME="main Coverage Results" MODIFIED="1763956540687" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/AWS_DeployPrometheuesGrafana$.coverage" NAME=" Coverage Results" MODIFIED="1763754916591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/unit_tests" />
   </component>
   <component name="github-copilot-workspace">

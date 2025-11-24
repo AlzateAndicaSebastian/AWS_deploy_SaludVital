@@ -2,17 +2,23 @@ from app.managers.medico_manager import MedicoManager
 from app.config import crear_token_acceso
 from app.managers.cita_manager import CitaManager
 from app.managers.admin_manager import AdminManager
+from app.services.examen_workflow_service import ExamenWorkflowService
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 import secrets
 import string
 
 
 class MedicoService:
+    # Leyenda: Servicio de médicos.
+    # Responsabilidades: registro/login, agenda, cierre de cita y generación de solicitudes de examen.
+    # Migración: sustituye creación directa de archivos de exámenes por ExamenWorkflowService.
     def __init__(self):
+        # ...existing code...
         self.medico_manager = MedicoManager()
         self.cita_manager = CitaManager()
-        self.admin_manager = AdminManager()
+        self.admin_manager = AdminManager()  # Legacy para resultados directos (se irá deprecando)
+        self.examen_workflow = ExamenWorkflowService()  # Nuevo workflow unificado
 
     def registrar_medico(self, documento: str, nombre_completo: str, contraseña: str,
                          telefono: str, email: str, especialidad: str) -> bool:
@@ -59,24 +65,39 @@ class MedicoService:
     def obtener_agenda_medico(self, documento: str) -> list:
         """
         Obtiene la agenda de un médico con sus citas futuras.
+        Leyenda (refactor): Se normaliza la fecha de cada cita para evitar el error
+        'can't compare offset-naive and offset-aware datetimes'. Se aceptan formatos:
+        - 2025-11-24T12:00:00 (naive)
+        - 2025-11-24T12:00:00Z (UTC)
+        - 2025-11-24T12:00:00+00:00 (offset)
+        Retorna solo citas con fecha >= ahora.
         """
-        # Obtener todas las citas del médico
         agenda_completa = self.medico_manager.obtener_agenda_medico(documento)
-        
-        # Filtrar solo citas futuras
-        ahora = datetime.now()
-        agenda_futura = []
-        
+        ahora_local = datetime.now()  # para comparar con fechas naive
+        ahora_utc = datetime.now(timezone.utc)  # para comparar con fechas aware
+        futuras = []
         for cita in agenda_completa:
+            raw = cita.get("fecha")
+            if not isinstance(raw, str):
+                futuras.append(cita)
+                continue
+            iso = raw.strip()
+            if iso.endswith("Z"):
+                iso = iso[:-1] + "+00:00"  # compatibilidad con fromisoformat
             try:
-                fecha_cita = datetime.fromisoformat(cita["fecha"])
-                if fecha_cita >= ahora:
-                    agenda_futura.append(cita)
-            except ValueError:
-                # Si hay un error en el formato de fecha, incluir la cita para revisión
-                agenda_futura.append(cita)
-        
-        return agenda_completa
+                fecha_cita = datetime.fromisoformat(iso)
+                if fecha_cita.tzinfo is None:
+                    # naive vs naive
+                    if fecha_cita >= ahora_local:
+                        futuras.append(cita)
+                else:
+                    # aware -> convertir a UTC y comparar
+                    if fecha_cita.astimezone(timezone.utc) >= ahora_utc:
+                        futuras.append(cita)
+            except Exception:
+                # Si hay un problema de parsing, incluir para revisión manual
+                futuras.append(cita)
+        return futuras
 
     def cerrar_cita(self, documento_medico: str, codigo_cita: str, estado: str, 
                     diagnostico: dict = None) -> bool:
@@ -86,64 +107,36 @@ class MedicoService:
         """
         if estado not in ['realizada', 'cancelada', 'noAsistida']:
             raise ValueError("Estado de cita inválido")
-            
-        # Obtener la agenda del médico
         agenda = self.medico_manager.obtener_agenda_medico(documento_medico)
-        
-        # Buscar la cita específica
         cita_encontrada = None
         for i, cita in enumerate(agenda):
             if cita.get("codigo_cita") == codigo_cita:
                 cita_encontrada = cita
                 indice_cita = i
                 break
-                
         if not cita_encontrada:
             raise ValueError("Cita no encontrada en la agenda del médico")
-            
-        # Actualizar el estado de la cita
         cita_encontrada["estado"] = estado
-        
-        # Si la cita se marca como realizada, procesar el diagnóstico
         if estado == "realizada" and diagnostico:
-            # Agregar información del médico al diagnóstico
             datos_medico = self.medico_manager.obtener_datos_medico(documento_medico)
             diagnostico["medico"] = {
                 "documento": documento_medico,
                 "nombre": datos_medico["nombre_completo"],
                 "especialidad": datos_medico["especialidad"]
             }
-            
-            # Guardar el diagnóstico
             self.medico_manager.agregar_diagnostico(codigo_cita, diagnostico)
-            
-            # Marcar cita como atendida por el médico
             self.medico_manager.marcar_cita_atendida(documento_medico, codigo_cita)
-            
-            # Si se solicitaron exámenes, crear registros de exámenes
             if "examenes_solicitados" in diagnostico:
                 for examen in diagnostico["examenes_solicitados"]:
-                    # Generar código único para el examen
-                    codigo_examen = self._generar_codigo_examen()
-                    
-                    # Crear registro de examen
-                    datos_examen = {
-                        "documento_paciente": cita_encontrada.get("documento"),
-                        "paciente": cita_encontrada.get("paciente"),
-                        "codigo_cita": codigo_cita,
-                        "examen_solicitado": examen,
-                        "medico": diagnostico["medico"],
-                        "diagnostico": diagnostico.get("descripcion", ""),
-                        "estado": "pendiente"
-                    }
-                    
-                    # Guardar el examen usando el admin manager
-                    self.admin_manager.crear_resultado_examen(codigo_examen, datos_examen)
-        
-        # Actualizar la agenda
+                    # Leyenda: En vez de crear resultado directo, generamos solicitud formal.
+                    self.examen_workflow.crear_solicitud(
+                        codigo_cita=codigo_cita,
+                        documento_paciente=cita_encontrada.get("documento"),
+                        documento_medico=documento_medico,
+                        tipo_examen=examen
+                    )
         agenda[indice_cita] = cita_encontrada
         self.medico_manager.actualizar_agenda_medico(documento_medico, agenda)
-        
         return True
 
     def _generar_codigo_examen(self, length=8):

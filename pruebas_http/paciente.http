@@ -1,0 +1,87 @@
+# Archivo de pruebas HTTP - Rol Paciente
+# Variables iniciales
+@baseUrl = http://localhost:10000
+@paciente_doc = P001
+@paciente_nombre = Juan Perez
+@paciente_email = juan.perez@example.com
+@paciente_pass = clave123
+@medico_nombre = Dr Smith
+@fecha_prog = 2025-11-24T12:00:00Z
+# Asignar manualmente luego del login:
+@paciente_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb2N1bWVudG8iOiJQMDAxIiwibm9tYnJlX2NvbXBsZXRvIjoiSnVhbiBQZXJleiIsInRpcG9fdXN1YXJpbyI6InBhY2llbnRlIiwiZXhwIjoxNzYzOTU4MzU2fQ.EwI6AnPs08Mrk7TV1KSF_8ROEiKNSKvVw_Il6QN3N9E
+
+### Registro paciente
+POST {{baseUrl}}/pacientes/registro
+Content-Type: application/json
+
+{
+  "documento": "{{paciente_doc}}",
+  "nombre_completo": "{{paciente_nombre}}",
+  "contraseña": "{{paciente_pass}}",
+  "telefono": "3001234567",
+  "email": "{{paciente_email}}",
+  "edad": 30,
+  "sexo": "Masculino"
+}
+
+### Login paciente (copiar token de respuesta y sustituir @paciente_token)
+POST {{baseUrl}}/pacientes/login
+Content-Type: application/json
+
+{
+  "documento": "{{paciente_doc}}",
+  "contraseña": "{{paciente_pass}}"
+}
+
+### Crear cita
+POST {{baseUrl}}/citas
+Authorization: Bearer {{paciente_token}}
+Content-Type: application/json
+
+{
+  "paciente": "{{paciente_nombre}}",
+  "medico": "{{medico_nombre}}",
+  "fecha": "{{fecha_prog}}",
+  "documento": "{{paciente_doc}}",
+  "tipoCita": "Consulta",
+  "motivoPaciente": "Dolor de cabeza"
+}
+
+### Listar citas del paciente
+GET {{baseUrl}}/citas/{{paciente_doc}}
+Authorization: Bearer {{paciente_token}}
+
+### Intento de acceso no autorizado (otro paciente)
+@otro_doc = P999
+GET {{baseUrl}}/citas/{{otro_doc}}
+Authorization: Bearer {{paciente_token}}
+
+### Eliminar cita (reemplazar fecha si difiere)
+DELETE {{baseUrl}}/citas
+Authorization: Bearer {{paciente_token}}
+Content-Type: application/json
+
+{
+  "paciente": "{{paciente_nombre}}",
+  "medico": "{{medico_nombre}}",
+  "fecha": "{{fecha_prog}}",
+  "documento": "{{paciente_doc}}"
+}
+
+### Listar exámenes del paciente (puede estar vacío)
+GET {{baseUrl}}/pacientes/examenes
+Authorization: Bearer {{paciente_token}}
+
+### Reconsulta exámenes tras acciones de médico y admin
+GET {{baseUrl}}/pacientes/examenes
+Authorization: Bearer {{paciente_token}}
+
+### Consulta examen específico (legacy si existe)
+@codigo_examen = ca30c354-a65a-4821-9706-a79fd5f39318
+GET {{baseUrl}}/pacientes/examenes/{{codigo_examen}}
+Authorization: Bearer {{paciente_token}}
+
+### Acceso denegado examen de otro paciente
+@codigo_examen_otro = REEMPLAZAR_EXAMEN_OTRO
+GET {{baseUrl}}/pacientes/examenes/{{codigo_examen_otro}}
+Authorization: Bearer {{paciente_token}}

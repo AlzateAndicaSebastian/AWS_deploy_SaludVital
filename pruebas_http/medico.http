@@ -1,0 +1,65 @@
+# Archivo de pruebas HTTP - Rol Médico
+# Leyenda:
+# - Cubre registro, login, obtención de agenda, cierre de cita con diagnóstico y solicitud de examen.
+# - Requiere que el paciente haya creado previamente la cita (ver paciente.http)
+# - Genera solicitudes de examen en estado 'solicitado'.
+@baseUrl = http://localhost:10000
+@medico_doc = M001
+@medico_nombre = Dr Smith
+@medico_email = dr.smith@example.com
+@medico_pass = med123
+@especialidad = Medicina General
+
+### Registro médico
+POST {{baseUrl}}/medicos/registro
+Content-Type: application/json
+
+{
+  "documento": "{{medico_doc}}",
+  "nombre_completo": "{{medico_nombre}}",
+  "contraseña": "{{medico_pass}}",
+  "telefono": "3105550000",
+  "email": "{{medico_email}}",
+  "especialidad": "{{especialidad}}"
+}
+
+### Login médico
+POST {{baseUrl}}/medicos/login
+Content-Type: application/json
+
+{
+  "documento": "{{medico_doc}}",
+  "contraseña": "{{medico_pass}}"
+}
+> {% client.global.set("medico_token", response.body.token); %}
+
+### Obtener agenda del médico (después de que paciente cree cita)
+GET {{baseUrl}}/medicos/agenda
+Authorization: Bearer {{medico_token}}
+
+### Cerrar cita realizada con diagnóstico y exámenes solicitados
+# Asegúrate de haber obtenido codigo_cita y documento_paciente del archivo paciente.http
+@codigo_cita = 1RD9DW
+POST {{baseUrl}}/medicos/cerrar-cita
+Authorization: Bearer {{medico_token}}
+Content-Type: application/json
+
+{
+  "codigo_cita": "{{codigo_cita}}",
+  "estado": "realizada",
+  "diagnostico": {
+    "codigo_cita": "{{codigo_cita}}",
+    "descripcion": "Cefalea tensional leve",
+    "observaciones": "Recomendado hidratación y reposo",
+    "examenes_solicitados": ["Hemograma", "Glucosa"]
+  }
+}
+
+### Obtener diagnóstico de la cita
+GET {{baseUrl}}/medicos/diagnosticos/{{codigo_cita}}
+Authorization: Bearer {{medico_token}}
+
+### Intento prohibido: Acceder diagnóstico inexistente
+GET {{baseUrl}}/medicos/diagnosticos/CODIGO_FAKE
+Authorization: Bearer {{medico_token}}
+

@@ -4,30 +4,31 @@ import os
 
 
 class AdminService:
+    # Leyenda: Modo simplificado de administración.
+    # Un único usuario admin definido por variables de entorno:
+    # ADMIN_USERNAME y ADMIN_SECRET_KEY (password). No existe registro vía API.
+    # Ventaja: reduce superficie de ataque; la rotación de credenciales se hace fuera del sistema.
     def __init__(self):
-        self.admin_manager = AdminManager()
+        self.admin_manager = AdminManager()  # Se mantiene para gestión de exámenes legacy.
+        self._admin_username = os.getenv("ADMIN_USERNAME", "admin")
+        self._admin_secret = os.getenv("ADMIN_SECRET_KEY", "clave_admin_secreta_por_defecto")
 
     def login_admin(self, username: str, password: str) -> dict:
         """
         Autentica a un administrador y genera un token de acceso.
         """
-        # Clave secreta para administradores (debería estar en variables de entorno)
-        ADMIN_SECRET_KEY = os.getenv("ADMIN_SECRET_KEY", "clave_admin_secreta_por_defecto")
-        
-        # En una implementación real, se debería usar un sistema de autenticación más seguro
-        # Esta es una implementación básica para demostración
-        if username == "admin" and password == ADMIN_SECRET_KEY:
+        if username == self._admin_username and password == self._admin_secret:
             # Crear token de acceso con los datos del administrador
             token = crear_token_acceso({
                 "username": username,
                 "tipo_usuario": "admin"
             })
-            
+
             return {
                 "token": token,
                 "mensaje": "Autenticación exitosa"
             }
-        
+
         raise ValueError("Credenciales inválidas")
 
     def crear_resultado_examen(self, codigo_examen: str, datos_examen: dict):

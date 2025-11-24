@@ -67,6 +67,59 @@ Para habilitar el despliegue en AWS, se deben configurar los siguientes secrets 
 - `AWS_EC2_INSTANCE_IP`: IP de la instancia EC2
 - `SSH_PRIVATE_KEY`: Clave privada para acceder a la instancia, esta en el repo local
 
+## Despliegue en EC2 con Docker Compose y .env
+
+1. Copiar el repositorio:
+```bash
+ssh ec2-user@IP_EC2
+sudo yum install -y git docker
+sudo systemctl enable --now docker
+sudo usermod -aG docker ec2-user
+exit
+ssh ec2-user@IP_EC2
+git clone https://github.com/tu-org/tu-repo.git
+cd tu-repo
+```
+2. Crear archivo `.env` (NO subirlo al repo):
+```bash
+cat > .env <<'EOF'
+frontDesplegado=https://frontend.example.com
+ADMIN_USERNAME=admin
+ADMIN_SECRET_KEY=ClaveMuySeguraCambiar123!
+EOF
+```
+3. Construir y levantar contenedor:
+```bash
+docker compose build
+docker compose up -d
+```
+4. Verificar:
+```bash
+curl -s http://localhost:10000/ | jq
+```
+5. Rotar credenciales:
+```bash
+docker compose down
+sed -i 's/ClaveMuySeguraCambiar123!/NuevaClaveUltraSegura456!/' .env
+docker compose up -d --build
+```
+
+### Variables soportadas
+- `frontDesplegado` o `FRONT_DESPLEGADO`: dominios permitidos en CORS.
+- `ADMIN_USERNAME`, `ADMIN_SECRET_KEY`: credenciales del administrador único.
+- `PORT` (si se parametriza en futuro).
+
+### Persistencia
+Los datos JSON se almacenan en el volumen `vitalapp_data` mapeado a `/root/memoryApps/saludVital` dentro del contenedor. Para respaldos:
+```bash
+docker run --rm -v vitalapp_data:/data -v $(pwd):/backup busybox tar czf /backup/backup_vitalapp_data.tgz /data
+```
+
+### Seguridad
+- No subir `.env` ni llaves privadas.
+- Cambiar la clave por defecto del admin antes del primer despliegue.
+- Considerar mover `ADMIN_SECRET_KEY` a AWS SSM Parameter Store para mayor seguridad.
+
 ## Documentación
 
 En el directorio [documentation](documentation/) se encuentran los diagramas de flujo que explican:

@@ -2,7 +2,7 @@ import json
 import os
 import secrets
 import string
-from datetime import datetime
+from datetime import datetime, timezone
 from filelock import FileLock
 from app.managers.medico_manager import MedicoManager
 
@@ -98,61 +98,47 @@ class CitaManager:
     #  📌  OPERACIONES PRINCIPALES
     # ===============================================================
 
+    def obtener_citas_paciente(self, documento):
+        # Wrapper público requerido por tests unitarios.
+        return self._load_data_paciente(documento)
+
     def agendar_cita(self, paciente, medico, fecha, documento, tipoCita, motivoPaciente):
         """
         Guarda la cita en el archivo individual del paciente.
         """
         # Verificar que el médico exista
         datos_medico = self.verificar_medico(medico)
-        # Compatibilidad: mantener 'medico' como string como esperan los tests.
-        medico_str = datos_medico['nombre']
+        # Preservar cadena original del parámetro 'medico' para compatibilidad tests (p.ej. 'Dr. Smith').
+        medico_str = medico if isinstance(medico, str) else datos_medico['nombre']
         medico_info = {
             "documento_medico": datos_medico['documento'],
             "nombre_medico": datos_medico['nombre']
         }
-
         citas_paciente = self._load_data_paciente(documento)
-
-        # Validar fecha -- esta verificando que no sea una fecha pasada, pero si estamos usando time now , puede ser un metodo inutil
         fecha_valida = self._verificar_fecha(fecha)
-
-        # (Opcional) Validación si quieres evitar duplicados exactos:
-        # if self._cita_existente(citas_paciente, medico_info, fecha_valida):
-        #     raise ValueError("Cita duplicada.")
-
         nueva_cita = {
             "paciente": paciente,
             "medico": medico_str,
-            "medico_info": medico_info,  # Nuevo campo extendido
+            "medico_info": medico_info,
             "fecha": fecha_valida,
             "documento": documento,
-            "registrado": datetime.now().isoformat(), # muestra la fecha y hora de registro
+            "registrado": datetime.now().isoformat(),
             "codigo_cita": self._generar_codigo_cita(),
             "tipoCita": tipoCita,
             "motivoPaciente": motivoPaciente,
-            "prioridad": self._calcular_prioridad(tipoCita) # la prioridad es util para el medico
+            "prioridad": self._calcular_prioridad(tipoCita)
         }
-
         citas_paciente.append(nueva_cita)
-
         self._save_data_paciente(documento, citas_paciente)
+        # Leyenda: Sincronización hacia agenda de médico (persistencia paralela). Evita agenda vacía.
+        doc_med = datos_medico['documento']
+        if doc_med != 'N/A':
+            agenda_medico = self.medico_manager.obtener_agenda_medico(doc_med)
+            # Evitar duplicados (por código de cita)
+            if not any(c.get("codigo_cita") == nueva_cita["codigo_cita"] for c in agenda_medico):
+                agenda_medico.append({**nueva_cita})
+                self.medico_manager.actualizar_agenda_medico(doc_med, agenda_medico)
         return nueva_cita
-
-    def _cita_existente(self, citas_paciente, medico, fecha): # por ahora no se usa
-        """
-        Busca si el paciente ya tiene una cita con ese médico en esa fecha.
-        """
-        return any(c["medico"] == medico and c["fecha"] == fecha for c in citas_paciente)
-
-    # ===============================================================
-    #  📌 CONSULTAS Y ELIMINACIONES POR PACIENTE
-    # ===============================================================
-
-    def obtener_citas_paciente(self, documento):
-        """
-        Retorna todas las citas de un paciente.
-        """
-        return self._load_data_paciente(documento)
 
     def eliminar_cita(self, paciente, medico, fecha, documento):
         """
@@ -164,26 +150,23 @@ class CitaManager:
         """
         citas = self._load_data_paciente(documento)
         inicial = len(citas)
-
-        # Normalizar representación del médico a string
         if isinstance(medico, list):
-            # Legacy lista [documento, nombre]
             medico_str = medico[1]
         else:
             medico_str = medico
-
-        citas = [
-            c for c in citas
-            if not (
-                c.get("paciente") == paciente and
-                c.get("medico") == medico_str and
-                c.get("fecha") == fecha and
-                c.get("documento") == documento
-            )
-        ]
-
+        # Obtener códigos de citas que se eliminarán (para limpiar agenda del médico)
+        codigos_eliminados = [c.get("codigo_cita") for c in citas if c.get("paciente") == paciente and c.get("medico") == medico_str and c.get("fecha") == fecha and c.get("documento") == documento]
+        citas = [c for c in citas if not (c.get("paciente") == paciente and c.get("medico") == medico_str and c.get("fecha") == fecha and c.get("documento") == documento)]
         if len(citas) < inicial:
             self._save_data_paciente(documento, citas)
+            # Leyenda: Limpieza de agenda del médico para mantener consistencia.
+            datos_medico = self.verificar_medico(medico_str)
+            doc_med = datos_medico['documento']
+            if doc_med != 'N/A' and codigos_eliminados:
+                agenda_medico = self.medico_manager.obtener_agenda_medico(doc_med)
+                agenda_filtrada = [a for a in agenda_medico if a.get("codigo_cita") not in codigos_eliminados]
+                if len(agenda_filtrada) != len(agenda_medico):
+                    self.medico_manager.actualizar_agenda_medico(doc_med, agenda_filtrada)
             return True
 
         return False
@@ -211,12 +194,34 @@ class CitaManager:
         return prioridades.get(tipoCita, -1)
 
     def _verificar_fecha(self, fecha):
+        """
+        Valida formato ISO 8601 de la fecha y que sea futura.
+        Soporta:
+        - Fechas 'naive' (sin zona horaria) e.g. 2025-11-24T12:00:00
+        - Fechas con 'Z' (UTC) e.g. 2025-11-24T12:00:00Z
+        - Fechas con offset e.g. 2025-11-24T12:00:00+00:00
+        Normaliza la comparación para evitar 'can't compare offset-naive and offset-aware datetimes'.
+        Mantiene la cadena original retornada para no romper tests previos.
+        """
         try:
-           fecha_cita = datetime.fromisoformat(fecha)
+            raw = fecha.strip()
+            # Reemplazar 'Z' por '+00:00' para compatibilidad con fromisoformat
+            if raw.endswith('Z'):
+                raw = raw[:-1] + '+00:00'
+            fecha_cita = datetime.fromisoformat(raw)
         except ValueError:
             raise ValueError("Formato de fecha inválido. Use ISO 8601.")
 
-        if fecha_cita < datetime.now():
+        # Normalizar referencia temporal
+        if fecha_cita.tzinfo is None:
+            # Fecha naive -> comparar contra ahora naive
+            ahora = datetime.now()
+        else:
+            # Fecha aware -> comparar en UTC
+            ahora = datetime.now(timezone.utc)
+            fecha_cita = fecha_cita.astimezone(timezone.utc)
+
+        if fecha_cita < ahora:
             raise ValueError("No se puede agendar una cita en una fecha pasada.")
 
         return fecha

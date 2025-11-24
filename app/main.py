@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from dotenv import load_dotenv
 from app.managers.cita_manager import CitaManager
 from app.managers.historial_cita import HistorialCita
 from app.managers.resultados import Resultados
@@ -13,15 +14,22 @@ from app.routers.examenes_router import router as examenes_router
 
 app = FastAPI(title="VitalApp API")
 
+# Cargar .env automáticamente usando python-dotenv si existe
+load_dotenv()  # Carga variables desde .env si está presente
+
 # Configurar CORS
-front_desplegado = os.getenv("frontDesplegado", "*")
+front_desplegado_env = os.getenv("frontDesplegado", os.getenv("FRONT_DESPLEGADO"))
+front_default = "*"
+allow_origins_list = [origin for origin in [front_desplegado_env, front_default] if origin]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[front_desplegado],
+    allow_origins=allow_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Leyenda CORS: Se toma la variable frontDesplegado si existe y se añade '*' para pruebas locales.
 
 # Registrar los routers
 app.include_router(citas_router)

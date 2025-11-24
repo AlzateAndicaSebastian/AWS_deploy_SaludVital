@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from app.services.medico_service import MedicoService
 from app.config import decodificar_token_acceso
+from app.security.roles import require_role, Role, get_payload
 
 router = APIRouter(prefix="/medicos", tags=["medicos"])
 
@@ -35,25 +36,6 @@ class CerrarCitaRequest(BaseModel):
     codigo_cita: str
     estado: str  # "realizada", "cancelada", "noAsistida"
     diagnostico: Optional[Diagnostico] = None
-
-def verificar_token_medico(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """
-    Verifica el token de acceso y devuelve el payload si es válido y corresponde a un médico.
-    """
-    try:
-        payload = decodificar_token_acceso(credentials.credentials)
-        if payload.get("tipo_usuario") != "medico":
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Tipo de usuario no autorizado",
-            )
-        return payload
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token inválido o expirado",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
 
 @router.post("/registro", status_code=status.HTTP_201_CREATED)
 async def registrar_medico(datos: RegistroMedico):
@@ -106,7 +88,7 @@ async def login_medico(credenciales: LoginMedico):
         )
 
 @router.get("/agenda")
-async def obtener_agenda(payload: dict = Depends(verificar_token_medico)):
+async def obtener_agenda(payload: dict = Depends(require_role(Role.medico))):
     """
     Obtiene la agenda de un médico con sus citas futuras.
     """
@@ -123,7 +105,7 @@ async def obtener_agenda(payload: dict = Depends(verificar_token_medico)):
 @router.post("/cerrar-cita")
 async def cerrar_cita(
     datos_cierre: CerrarCitaRequest,
-    payload: dict = Depends(verificar_token_medico)
+    payload: dict = Depends(require_role(Role.medico))
 ):
     """
     Cierra una cita con un estado específico. Si el estado es 'realizada',
@@ -132,14 +114,12 @@ async def cerrar_cita(
     try:
         documento_medico = payload.get("documento")
         diagnostico_dict = datos_cierre.diagnostico.dict() if datos_cierre.diagnostico else None
-        
         resultado = medico_service.cerrar_cita(
             documento_medico,
             datos_cierre.codigo_cita,
             datos_cierre.estado,
             diagnostico_dict
         )
-        
         return {"mensaje": "Cita cerrada exitosamente", "resultado": resultado}
     except ValueError as e:
         raise HTTPException(
@@ -155,7 +135,7 @@ async def cerrar_cita(
 @router.get("/diagnosticos/{codigo_cita}")
 async def obtener_diagnostico(
     codigo_cita: str,
-    payload: dict = Depends(verificar_token_medico)
+    payload: dict = Depends(require_role(Role.medico))
 ):
     """
     Obtiene el diagnóstico de una cita específica.

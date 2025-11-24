@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from typing import Optional
 from app.services.admin_service import AdminService
 from app.config import decodificar_token_acceso
+from app.security.roles import require_role, Role
 
 router = APIRouter(prefix="/admin", tags=["administradores"])
 
@@ -84,7 +85,7 @@ async def login_admin(credenciales: AdminLogin):
 async def crear_resultado_examen(
     codigo_examen: str,
     datos_examen: ResultadoExamen,
-    payload: dict = Depends(verificar_token_admin)
+    payload: dict = Depends(require_role(Role.admin))
 ):
     """
     Crea un resultado de examen.
@@ -102,7 +103,7 @@ async def crear_resultado_examen(
 @router.get("/examenes/{codigo_examen}")
 async def obtener_resultado_examen(
     codigo_examen: str,
-    payload: dict = Depends(verificar_token_admin)
+    payload: dict = Depends(require_role(Role.admin))
 ):
     """
     Obtiene el resultado de un examen específico.
@@ -126,7 +127,7 @@ async def obtener_resultado_examen(
 async def actualizar_estado_examen(
     codigo_examen: str,
     datos_actualizacion: ActualizarEstadoExamen,
-    payload: dict = Depends(verificar_token_admin)
+    payload: dict = Depends(require_role(Role.admin))
 ):
     """
     Actualiza el estado de un examen.
@@ -137,13 +138,11 @@ async def actualizar_estado_examen(
             datos_actualizacion.estado,
             datos_actualizacion.observaciones
         )
-        
         if not resultado:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Examen no encontrado"
             )
-            
         return {"mensaje": "Estado del examen actualizado exitosamente"}
     except Exception as e:
         raise HTTPException(
@@ -155,7 +154,7 @@ async def actualizar_estado_examen(
 @router.get("/pacientes/{documento_paciente}/examenes")
 async def listar_examenes_paciente(
     documento_paciente: str,
-    payload: dict = Depends(verificar_token_admin)
+    payload: dict = Depends(require_role(Role.admin))
 ):
     """
     Lista todos los exámenes de un paciente específico.
@@ -170,8 +169,11 @@ async def listar_examenes_paciente(
         )
 
 @router.get("/dashboard")
-async def admin_dashboard(payload: dict = Depends(verificar_token_admin)):
+async def admin_dashboard(payload: dict = Depends(require_role(Role.admin))):
     """
     Dashboard de administrador protegido.
     """
     return {"mensaje": "Bienvenido al panel de administrador", "data": payload}
+
+# Eliminado endpoint /admin/registro (modo único administrador por entorno)
+# Leyenda: Para crear/rotar credenciales, ajustar variables ADMIN_USERNAME y ADMIN_SECRET_KEY fuera del API.

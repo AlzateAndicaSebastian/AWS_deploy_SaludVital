@@ -146,6 +146,13 @@ class MedicoManager:
         # Leyenda: Persistencia simple de diagnóstico por cita.
         # Se planea migrar a DiagnosticoRepository que agrupará todos en un sólo archivo.
         archivo = self.diagnosticos_dir / f"{codigo_cita}.json"
+        # Normalizar datetimes en el dict si presentes
+        for k, v in list(diagnostico_data.items()):
+            if hasattr(v, "isoformat"):
+                try:
+                    diagnostico_data[k] = v.isoformat()
+                except Exception:
+                    pass
         diagnostico_data["fecha_registro"] = datetime.now().isoformat()
         locked_atomic_write(str(archivo), diagnostico_data)
 

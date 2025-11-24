@@ -1,0 +1,125 @@
+%% Diagrama Mermaid detallado de casos de uso (Paciente, Médico, Administrador)
+%% Enfocado en: creación/validación de usuarios, gestión de citas, flujo de solicitudes y resultados de exámenes,
+%% y acceso a información por roles.
+
+flowchart LR
+    %% ROLES PRINCIPALES
+    subgraph Roles[Roles]
+        P[Paciente]
+        M[Médico]
+        A[Administrador]
+    end
+
+    %% REGISTROS / AUTENTICACIÓN
+    subgraph Auth[Registro / Login]
+        RP[POST /pacientes/registro]
+        LP[POST /pacientes/login]
+        RM[POST /medicos/registro]
+        LM[POST /medicos/login]
+        LA[POST /admin/login]
+    end
+
+    P --> RP
+    RP --> PacienteFile[archivo pacientes/documento.json]
+    P --> LP
+    M --> RM
+    RM --> MedicoFile[archivo medicos/doc_medico.json]
+    M --> LM
+    A --> LA
+    LA --> EnvVars[(ADMIN_USERNAME / ADMIN_SECRET_KEY)]
+
+    %% CITAS
+    subgraph Citas[Gestión de Citas]
+        CC[POST /citas Paciente agenda cita]
+        LC[GET /citas/documento_paciente]
+        EC[DELETE /citas]
+        AG[GET /medicos/agenda]
+        Cerrar[POST /medicos/cerrar-cita]
+    end
+
+    LP --> CC
+    CC --> CitaPacienteFile[archivo citas/documento_paciente.json]
+    CC --> AgendaMedicoFile[archivo agendas/doc_medico.json]
+    LC --> CitaPacienteFile
+    EC --> CitaPacienteFile
+    EC --> AgendaMedicoFile
+    AG --> AgendaMedicoFile
+    Cerrar --> AgendaMedicoFile
+    Cerrar --> DiagnosticoFile[archivo diagnosticos/codigo_cita.json]
+
+    %% EXÁMENES WORKFLOW
+    subgraph ExamenWorkflow[Workflow Exámenes]
+        Solicitud[Crear solicitud examen]
+        Autorizar[POST /examenes/solicitudes/autorizar]
+        Resultado[POST /examenes/resultados]
+    end
+
+    Cerrar --> Solicitud
+    Solicitud --> ExSolicitudes[examenes_solicitudes.json]
+    Autorizar --> ExSolicitudes
+    Autorizar --> EstadoAutorizado[Estado = autorizado]
+    Resultado --> ExResultados[examenes_resultados.json]
+    Resultado --> ExSolicitudes
+
+    %% EXÁMENES LEGACY (aún soportado)
+    subgraph ExamenLegacy[Exámenes Legacy]
+        CrearLegacy[admin_manager.crear_resultado_examen]
+    end
+    CrearLegacy --> LegacyExFile[examenes/codigo_examen.json]
+
+    %% CONSULTA EXÁMENES PACIENTE
+    subgraph ConsultaPaciente[Consulta Exámenes Paciente]
+        LEX[GET /pacientes/examenes]
+        LEXID[GET /pacientes/examenes/codigo]
+    end
+
+    LEX --> Fusion[PacienteService.fusionar legacy + workflow]
+    Fusion --> LegacyExFile
+    Fusion --> ExResultados
+    LEXID --> Fusion
+
+    %% SEGURIDAD / ROLES
+    subgraph Seguridad[Seguridad / JWT]
+        RolesModulo[roles.py]
+        TokenPaciente[(JWT paciente)]
+        TokenMedico[(JWT médico)]
+        TokenAdmin[(JWT admin)]
+    end
+
+    LP --> TokenPaciente
+    LM --> TokenMedico
+    LA --> TokenAdmin
+    RolesModulo --> CC
+    RolesModulo --> Cerrar
+    RolesModulo --> Autorizar
+    RolesModulo --> Resultado
+    RolesModulo --> LEX
+    RolesModulo --> LEXID
+
+    %% DETALLES DE TRANSFORMACIÓN
+    subgraph Normalizaciones[Normalizaciones]
+        FechaCita[Normalización fecha cita naive/aware]
+        FechaAgenda[Normalización agenda médica]
+        SerialDT[Serialización datetime -> ISO]
+    end
+
+    CC --> FechaCita
+    AG --> FechaAgenda
+    Cerrar --> SerialDT
+    Resultado --> SerialDT
+    CrearLegacy --> SerialDT
+
+    %% LEYENDAS
+    classDef role fill:#ffe0b2,stroke:#ef6c00,color:#000
+    classDef file fill:#f5f5f5,stroke:#616161,color:#000
+    classDef api fill:#e0f7fa,stroke:#006064,color:#000
+    classDef proc fill:#e8f5e9,stroke:#2e7d32,color:#000
+    classDef sec fill:#fce4ec,stroke:#ad1457,color:#000
+    classDef norm fill:#ede7f6,stroke:#5e35b1,color:#000
+
+    class P,M,A role
+    class PacienteFile,MedicoFile,CitaPacienteFile,AgendaMedicoFile,DiagnosticoFile,ExSolicitudes,ExResultados,LegacyExFile,EnvVars,TokenPaciente,TokenMedico,TokenAdmin file
+    class RP,LP,RM,LM,LA,CC,LC,EC,AG,Cerrar,Autorizar,Resultado,LEX,LEXID api
+    class Solicitud,CrearLegacy,Fusion proc
+    class RolesModulo sec
+    class FechaCita,FechaAgenda,SerialDT norm

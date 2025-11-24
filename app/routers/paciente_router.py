@@ -3,6 +3,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from app.services.paciente_service import PacienteService
 from app.config import decodificar_token_acceso
+from app.security.roles import require_role, Role
 
 router = APIRouter(prefix="/pacientes", tags=["pacientes"])
 
@@ -71,7 +72,7 @@ async def registrar_paciente(datos: RegistroPaciente):
 
 
 @router.get("/examenes")
-async def obtener_examenes_paciente(payload: dict = Depends(verificar_token)):
+async def obtener_examenes_paciente(payload: dict = Depends(require_role(Role.paciente))):
     """
     Obtiene todos los exámenes del paciente autenticado.
     """
@@ -89,32 +90,26 @@ async def obtener_examenes_paciente(payload: dict = Depends(verificar_token)):
 @router.get("/examenes/{codigo_examen}")
 async def obtener_resultado_examen(
     codigo_examen: str,
-    payload: dict = Depends(verificar_token)
+    payload: dict = Depends(require_role(Role.paciente))
 ):
     """
     Obtiene el resultado de un examen específico.
     """
     try:
-        # Verificar que el examen pertenezca al paciente
         documento_paciente = payload.get("documento")
         examen = paciente_service.obtener_resultado_examen(codigo_examen)
-        
         if not examen:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Examen no encontrado"
             )
-            
-        # Verificar que el examen pertenezca al paciente autenticado
         if examen.get("documento_paciente") != documento_paciente:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="No tienes permiso para acceder a este examen"
             )
-            
         return {"examen": examen}
     except HTTPException:
-        # Relanzar las excepciones HTTP ya formateadas
         raise
     except Exception as e:
         raise HTTPException(
