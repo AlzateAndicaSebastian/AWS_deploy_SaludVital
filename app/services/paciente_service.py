@@ -2,6 +2,8 @@ from app.managers.paciente_manager import PacienteManager
 from app.config import crear_token_acceso
 from app.managers.admin_manager import AdminManager
 from app.services.examen_workflow_service import ExamenWorkflowService
+from app.metrics.metrics import inc_paciente_registrado, inc_paciente_login
+from pathlib import Path
 
 
 class PacienteService:
@@ -15,9 +17,10 @@ class PacienteService:
             self.paciente_manager = PacienteManager(base_dir=base_dir)
             self.admin_manager = AdminManager(base_dir=base_dir)
             self.examen_workflow = ExamenWorkflowService()
-            # Override repos del workflow al mismo base_dir
-            self.examen_workflow.solicitud_repo.base_dir = base_dir
-            self.examen_workflow.resultado_repo.base_dir = base_dir
+            # Reasignar repos del workflow al mismo base_dir (ajuste: usar file_path explícito)
+            base_path = Path(base_dir)
+            self.examen_workflow.solicitud_repo.file_path = base_path / 'examenes_solicitudes.json'
+            self.examen_workflow.resultado_repo.file_path = base_path / 'examenes_resultados.json'
         else:
             self.paciente_manager = PacienteManager()
             self.admin_manager = AdminManager()
@@ -29,9 +32,12 @@ class PacienteService:
         Registra un nuevo paciente en el sistema.
         """
         try:
-            return self.paciente_manager.registrar_paciente(
+            registro = self.paciente_manager.registrar_paciente(
                 documento, nombre_completo, contraseña, telefono, email, edad, sexo
             )
+            if registro:
+                inc_paciente_registrado()
+            return registro
         except ValueError as e:
             raise e
         except Exception as e:
@@ -52,6 +58,7 @@ class PacienteService:
                     "tipo_usuario": "paciente"
                 })
                 
+                inc_paciente_login()
                 return {
                     "token": token,
                     "paciente": datos_paciente
@@ -68,36 +75,37 @@ class PacienteService:
     def obtener_examenes_paciente(self, documento: str) -> list:
         """
         Obtiene todos los exámenes de un paciente.
+        Incluye legacy + workflow normalizados.
         """
-        #legacy = self.admin_manager.listar_examenes_paciente(documento)
+        legacy = self.admin_manager.listar_examenes_paciente(documento)
         workflow = self.examen_workflow.listar_resultados_paciente(documento)
         normalizados = []
-        # for ex in legacy:
-        #     normalizados.append({
-        #         "codigo": ex.get("codigo_examen"),
-        #         "tipo_examen": ex.get("examen_solicitado"),
-        #         "codigo_cita": ex.get("codigo_cita"),
-        #         "documento_paciente": ex.get("documento_paciente"),
-        #         "documento_medico": (ex.get("medico") or {}).get("documento"),
-        #         "diagnostico": ex.get("diagnostico"),
-        #         "interpretacion": ex.get("diagnostico"),  # legacy no distingue
-        #         "valores": ex.get("valores"),
-        #         "estado": ex.get("estado"),
-        #         "estado_riesgo": None,
-        #         "origen": "legacy",
-        #         "fecha_registro": ex.get("fecha_registro")
-        #     })
+        for ex in legacy:
+            normalizados.append({
+                "codigo": ex.get("codigo_examen"),
+                "tipo_examen": ex.get("examen_solicitado"),
+                "codigo_cita": ex.get("codigo_cita"),
+                "documento_paciente": ex.get("documento_paciente"),
+                "documento_medico": (ex.get("medico") or {}).get("documento"),
+                "diagnostico": ex.get("diagnostico"),
+                "interpretacion": ex.get("diagnostico"),  # legacy no distingue
+                "valores": ex.get("valores"),
+                "estado": ex.get("estado"),
+                "estado_riesgo": None,
+                "origen": "legacy",
+                "fecha_registro": ex.get("fecha_registro")
+            })
         for ex in workflow:
             normalizados.append({
                 "codigo": ex.get("id"),
-                "tipo_examen": None,  # solicitud inicial guarda tipo en solicitud, no en resultado
+                "tipo_examen": ex.get("tipo_examen"),
                 "codigo_cita": ex.get("codigo_cita"),
                 "documento_paciente": ex.get("documento_paciente"),
                 "documento_medico": ex.get("documento_medico"),
                 "diagnostico": None,
                 "interpretacion": ex.get("interpretacion"),
                 "valores": ex.get("valores"),
-                "estado": "resultado",  # resultado consolidado
+                "estado": "resultado",
                 "estado_riesgo": ex.get("estado_riesgo"),
                 "origen": "workflow",
                 "fecha_registro": ex.get("fecha_registro")

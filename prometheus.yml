@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'vitalapp'
+    honor_timestamps: true
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+      - targets: ['vitalapp:10000']
+    relabel_configs:
+      # Asegura limpieza de labels en caso de futuras expansiones
+      - action: labeldrop
+        regex: '__meta.*'
+

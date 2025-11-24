@@ -11,6 +11,10 @@ from app.routers.paciente_router import router as paciente_router
 from app.routers.medico_router import router as medico_router
 from app.routers.admin_router import router as admin_router
 from app.routers.examenes_router import router as examenes_router
+# Métricas
+from app.metrics.metrics import observe_request, generate_latest, CONTENT_TYPE_LATEST
+from starlette.responses import Response
+import time
 
 app = FastAPI(title="VitalApp API")
 
@@ -37,6 +41,29 @@ app.include_router(paciente_router)
 app.include_router(medico_router)
 app.include_router(admin_router)
 app.include_router(examenes_router)
+
+# Middleware de métricas HTTP
+@app.middleware("http")
+async def metrics_http_middleware(request, call_next):
+    start = time.perf_counter()
+    response = None
+    try:
+        response = await call_next(request)
+        return response
+    finally:
+        duration = time.perf_counter() - start
+        # Obtener ruta normalizada (plantilla) si es posible
+        route_obj = request.scope.get("route")
+        route_path = getattr(route_obj, "path", None)
+        method = request.method
+        status_code = response.status_code if response else 500
+        observe_request(method, route_path, status_code, duration)
+
+# Endpoint /metrics
+@app.get("/metrics")
+async def metrics_endpoint():
+    data = generate_latest()
+    return Response(content=data, media_type=CONTENT_TYPE_LATEST)
 
 # Crear instancias
 cm = CitaManager()

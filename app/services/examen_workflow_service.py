@@ -15,6 +15,7 @@ from app.config import BASE_DATA_DIR
 from app.repositories.examen_repository import ExamenSolicitudRepository, ExamenResultadoRepository
 from app.models.examen import ExamenSolicitud, ExamenResultado
 from app.models.base import EstadoExamen
+from app.metrics.metrics import inc_examen_solicitado
 
 class ExamenWorkflowService:
     # Leyenda: Orquesta el ciclo de vida de un examen.
@@ -33,6 +34,7 @@ class ExamenWorkflowService:
             tipo_examen=tipo_examen
         )
         self.solicitud_repo.insert(solicitud.model_dump())
+        inc_examen_solicitado()
         return solicitud.model_dump()
 
     def autorizar_solicitud(self, solicitud_id: str) -> Dict[str, Any]:

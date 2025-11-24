@@ -3,6 +3,7 @@ from app.config import crear_token_acceso
 from app.managers.cita_manager import CitaManager
 from app.managers.admin_manager import AdminManager
 from app.services.examen_workflow_service import ExamenWorkflowService
+from app.metrics.metrics import inc_medico_registrado, inc_medico_login, inc_examen_solicitado
 import os
 from datetime import datetime, timezone
 import secrets
@@ -26,9 +27,12 @@ class MedicoService:
         Registra un nuevo médico en el sistema.
         """
         try:
-            return self.medico_manager.registrar_medico(
+            registro = self.medico_manager.registrar_medico(
                 documento, nombre_completo, contraseña, telefono, email, especialidad
             )
+            if registro:
+                inc_medico_registrado()
+            return registro
         except ValueError as e:
             raise e
         except Exception as e:
@@ -48,7 +52,7 @@ class MedicoService:
                     "nombre_completo": datos_medico["nombre_completo"],
                     "tipo_usuario": "medico"
                 })
-                
+                inc_medico_login()
                 return {
                     "token": token,
                     "medico": datos_medico
@@ -129,12 +133,14 @@ class MedicoService:
             if "examenes_solicitados" in diagnostico:
                 for examen in diagnostico["examenes_solicitados"]:
                     # Leyenda: En vez de crear resultado directo, generamos solicitud formal.
-                    self.examen_workflow.crear_solicitud(
+                    created = self.examen_workflow.crear_solicitud(
                         codigo_cita=codigo_cita,
                         documento_paciente=cita_encontrada.get("documento"),
                         documento_medico=documento_medico,
                         tipo_examen=examen
                     )
+                    if created:
+                        inc_examen_solicitado()
         agenda[indice_cita] = cita_encontrada
         self.medico_manager.actualizar_agenda_medico(documento_medico, agenda)
         return True
